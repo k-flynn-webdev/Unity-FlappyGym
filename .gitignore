@@ -1,0 +1,10 @@
+Temp/
+Logs/
+Library/
+.vs
+node_modules/
+dist/
+*incrementalSave
+*ignore*
+*.env
+current_tasks
