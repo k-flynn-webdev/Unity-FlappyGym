@@ -1,0 +1,22 @@
+
+start
+menu
+level load
+level editor/generator
+
+character loader
+character movement
+
+character ai
+obstacle avoidance / routing
+
+camera follow
+
+game states / 
+	paused
+	dead
+	restart
+	start
+	playing
+
+	
