@@ -9,7 +9,7 @@ public interface IObservable
     void Notify();
 
     // how to react on being notified
-    void React();
+    void React(GameStateObj state);
 
     void Subscribe(IObservable listener);
 

@@ -8,13 +8,13 @@ using UnityEditor;
 public class SomeScriptEditor : Editor
 {
 
-    public GameState.gameStates newState;
+    public GameStateObj.gameStates newState;
 
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        newState = (GameState.gameStates)EditorGUILayout.EnumPopup(newState);
+        newState = (GameStateObj.gameStates)EditorGUILayout.EnumPopup(newState);
 
         GameState myScript = (GameState)target;
         if (GUILayout.Button("Change"))
@@ -27,54 +27,52 @@ public class SomeScriptEditor : Editor
 public class GameState : MonoBehaviour, IObservable 
 {
 
-    public enum gameStates { Load, Main, Play, Pause, Over };
 
     [SerializeField]
-    private gameStates _gameState;
-    [SerializeField]
-    private gameStates _gameStateLast;
-
+    private GameStateObj _gameState = new GameStateObj();
 
     [SerializeField]
-    public gameStates state
-    { get { return this._gameState; } }
+    public GameStateObj.gameStates state
+    { get { return this._gameState.state; } }
 
-
-
-    public void ChangeState(gameStates state)
+    void Awake()
     {
+        ServiceLocator.Register<GameState>(this);
+    }
 
-        if (this._gameState == state)
+    public void ChangeState(GameStateObj.gameStates state)
+    {
+        if (this._gameState.state == state)
         {
             return;
         }
 
         switch (state)
         {
-            case gameStates.Load:
-                this.SetState(gameStates.Load);
+            case GameStateObj.gameStates.Load:
+                this.SetState(GameStateObj.gameStates.Load);
                 break;
-            case gameStates.Main:
-                this.SetState(gameStates.Main);
+            case GameStateObj.gameStates.Main:
+                this.SetState(GameStateObj.gameStates.Main);
                 break;
-            case gameStates.Play:
-                this.SetState(gameStates.Play);
+            case GameStateObj.gameStates.Play:
+                this.SetState(GameStateObj.gameStates.Play);
                 break;
-            case gameStates.Pause:
-                this.SetState(gameStates.Pause);
-                break;
-            case gameStates.Over:
-                this.SetState(gameStates.Over);
+            case GameStateObj.gameStates.Pause:
+                this.SetState(GameStateObj.gameStates.Pause);
+                break; 
+            case GameStateObj.gameStates.Over:
+                this.SetState(GameStateObj.gameStates.Over);
                 break;
         }
     }
 
-    public void SetState(gameStates state)
+    public void SetState(GameStateObj.gameStates state)
     {
-        this._gameStateLast = this._gameState;
-        this._gameState = state;
-        Debug.Log(this.state); // todo
+        this._gameState.last = this._gameState.state;
+        this._gameState.state = state;
         // anounce reactive change
+        Debug.Log(this.state); // todo
         this.Notify();
     }
 
@@ -88,11 +86,11 @@ public class GameState : MonoBehaviour, IObservable
     {
         for (int i = subscribers.Count - 1; i >= 0; i--)
         {
-            subscribers[i].React();
+            subscribers[i].React(this._gameState);
         }
     }
 
-    public void React() { }
+    public void React(GameStateObj state) { }
 
     public void Subscribe(IObservable listener)
     { subscribers.Add(listener); }
