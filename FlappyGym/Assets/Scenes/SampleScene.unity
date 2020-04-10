@@ -946,10 +946,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1
-  _jump: 4
-  _jumpDelay: 0.16
-  _gravityMS: 2.3
-  _gravityMaxSpeed: -12
+  _jump: 3
+  _jumpPeakDiff: 0.2
+  _jumpPeak: 0.166
+  _jumpMS: 10
+  _gravityMS: 5
+  _gravityMaxSpeed: -25
 --- !u!1 &1364441965
 GameObject:
   m_ObjectHideFlags: 0
