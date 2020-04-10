@@ -71,8 +71,6 @@ public class GameState : MonoBehaviour, IObservable
     {
         this._gameState.last = this._gameState.state;
         this._gameState.state = state;
-        // anounce reactive change
-        Debug.Log(this.state); // todo
         this.Notify();
     }
 

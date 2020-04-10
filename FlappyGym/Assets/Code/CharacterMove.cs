@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CharacterMove : MonoBehaviour, IObservable
 {
@@ -37,12 +38,13 @@ public class CharacterMove : MonoBehaviour, IObservable
 
         this.getLocalPos();
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !EventSystem.current.IsPointerOverGameObject())
         {
             this.Jump();
         }
 
-        this.Move();   
+        this.Move();
+        this.ResetInertia();
     }
 
 
@@ -53,13 +55,15 @@ public class CharacterMove : MonoBehaviour, IObservable
 
     void Move()
     {
-        //var xPos = this._localPos.x + (this._speed * Time.deltaTime);
         var xPos = 0f;
-        //var yPos = this._localPos.y + (Time.deltaTime * (_yInertia + (_gravity * 2f)));
-        var yPos = _yInertia;
-        this.transform.position = new Vector3(xPos, yPos, 0f);
+        //var yPos = _yInertia;
+        //var xPos = this._localPos.x + (this._speed * Time.deltaTime);
+        //var yPos = this._localPos.y + (Time.deltaTime * (this._yInertia + this._gravity));
+        var yPos = this._localPos.y;
+        yPos += Time.deltaTime * (this._yInertia * 5f);
+        yPos += Time.deltaTime * this._gravity;
 
-        this.ResetInertia();
+        this.transform.position = new Vector3(xPos, yPos, 0f);
     }
 
     void ResetInertia()
