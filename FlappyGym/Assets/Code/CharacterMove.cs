@@ -12,15 +12,16 @@ public class CharacterMove : MonoBehaviour, IObservable
     [SerializeField]
     private float _jumpDelay = 0.33f;
     [SerializeField]
-    private float _gravity = -9f;
-
+    private float _gravityMS = 2.3f;
+    [SerializeField]
+    private float _gravityMaxSpeed = -12f;
 
     private Vector3 _localPos;
-    private float _yInertia = 0f;
     private float _xInertia = 0f;
+    private float _gravtyInertia = 0f;
     private bool _gameInPlay = false;
 
-
+    private float _ground = -1f;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,8 @@ public class CharacterMove : MonoBehaviour, IObservable
 
         this.getLocalPos();
 
-        if (Input.GetButtonDown("Fire1") && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetButtonDown("Fire1") &&
+            !EventSystem.current.IsPointerOverGameObject())
         {
             this.Jump();
         }
@@ -56,12 +58,18 @@ public class CharacterMove : MonoBehaviour, IObservable
     void Move()
     {
         var xPos = 0f;
-        //var yPos = _yInertia;
-        //var xPos = this._localPos.x + (this._speed * Time.deltaTime);
-        //var yPos = this._localPos.y + (Time.deltaTime * (this._yInertia + this._gravity));
         var yPos = this._localPos.y;
-        yPos += Time.deltaTime * (this._yInertia * 5f);
-        yPos += Time.deltaTime * this._gravity;
+
+        if (this._jumpDelayVal > 0f) {
+            yPos += this._jumpDelayVal;
+        }
+
+        yPos += this._gravtyInertia * Time.deltaTime;
+
+        if (yPos < this._ground)
+        {
+            yPos = this._ground;
+        }
 
         this.transform.position = new Vector3(xPos, yPos, 0f);
     }
@@ -74,26 +82,20 @@ public class CharacterMove : MonoBehaviour, IObservable
             return;
         }
 
-        if (this._yInertia >= 0f)
-        {
-            this._jumpDecayVal += Time.deltaTime;
-            this._yInertia = this._yInertia - (this._jumpDecayVal * this._jumpDecayVal);
-        }
+        this._gravtyInertia = Mathf.Lerp(this._gravtyInertia, this._gravityMaxSpeed, Time.deltaTime * this._gravityMS);
     }
 
-    private float _jumpDecayVal = 0f;
     private float _jumpDelayVal = 0f;
 
     void Jump()
     {
-        if (this._yInertia > this._jump * 0.75f)
+        if (this._gravtyInertia > this._jump * 0.5f)
         {
             return;
         }
 
-        this._jumpDecayVal = 0f;
+        this._gravtyInertia = this._jump;
         this._jumpDelayVal = this._jumpDelay;
-        this._yInertia = this._jump;
     }
 
 
