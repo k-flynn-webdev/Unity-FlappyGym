@@ -6,7 +6,10 @@ using UnityEngine.EventSystems;
 public class CharacterMove : MonoBehaviour, IObservable
 {
     [SerializeField]
-    private float _speed = 1f;
+    private float _speedRight = 1f;
+    [SerializeField]
+    private float _speedMaxRight = 2f;
+
     [SerializeField]
     private float _jump = 3f;
     [SerializeField]
@@ -21,8 +24,6 @@ public class CharacterMove : MonoBehaviour, IObservable
     private float _gravityMaxSpeed = -12f;
 
     private Vector3 _localPos;
-    //private float _xInertia = 0f;
-    //private float _yInertia = 0f;
     private bool _gameInPlay = false;
 
     private float _ground = 0f;
@@ -60,7 +61,10 @@ public class CharacterMove : MonoBehaviour, IObservable
 
     void Move()
     {
-        var xPos = 0f;
+
+        this.updateHit();
+
+        var xPos = this.MoveForward();
         var yPos = this.JumpUpdate();
 
         if (yPos < this._ground)
@@ -69,6 +73,48 @@ public class CharacterMove : MonoBehaviour, IObservable
         }
 
         this.transform.position = new Vector3(xPos, yPos, 0f);
+    }
+
+    private Vector3 _inertiaHit = new Vector3();
+
+    void OnTriggerEnter(Collider hitBy)
+    {
+        var force = 2f;
+
+        if(hitBy.CompareTag("Bounce"))
+        {
+            force = 5f;
+        }
+
+        if (hitBy.tag == "Death")
+        {
+            force = 13f;
+        }
+
+        _isFalling = true;
+        _playerFallVel = 0f;
+        _intertiaForward = 0f;
+        _inertiaHit = (this.transform.position - hitBy.transform.position) * force;
+    }
+
+    void updateHit()
+    {
+        _inertiaHit = Vector3.Lerp(_inertiaHit, Vector3.zero, Time.deltaTime * 5f);
+    }
+    
+
+    private float _intertiaForward = 0f;
+
+    float MoveForward ()
+    {
+        _intertiaForward = Mathf.Lerp(_intertiaForward, this._speedMaxRight, Time.deltaTime * this._speedRight);
+
+        if (Mathf.Abs(this._inertiaHit.x) > 0.1f)
+        {
+            _intertiaForward = this._inertiaHit.x;
+        }
+
+        return this._localPos.x + _intertiaForward * Time.deltaTime;
     }
 
 
@@ -128,6 +174,11 @@ public class CharacterMove : MonoBehaviour, IObservable
         if (_isFalling)
         {
             this._playerFallVel = Mathf.Lerp(this._playerFallVel, this._gravityMaxSpeed, Time.deltaTime * this._gravityMS);
+        }
+
+        if( Mathf.Abs(this._inertiaHit.y) > 0.1f)
+        {
+            this._playerFallVel += this._inertiaHit.y;
         }
 
         yPos += this._playerFallVel * Time.deltaTime;
