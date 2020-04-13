@@ -6,27 +6,31 @@ using UnityEngine.EventSystems;
 public class CharacterMove : MonoBehaviour, IObservable
 {
     [SerializeField]
-    private float _speedRight = 1f;
+    private Vector3 _speed = new Vector3();
     [SerializeField]
-    private float _speedMaxRight = 2f;
+    private float _speedMax = 2f;
+    [SerializeField]
+    private Vector3 _jump = new Vector3();
+    [SerializeField]
+    private float _jumpDelay = 0.3f;
+    [SerializeField]
+    private Vector3 _gravity = new Vector3();
 
     [SerializeField]
-    private float _jump = 3f;
-    [SerializeField]
-    private float _jumpPeakDiff = 0.5f;
-    [SerializeField]
-    private float _jumpPeak = 0.5f;
-    [SerializeField]
-    private float _jumpMS = 2.3f;
-    [SerializeField]
-    private float _gravityMS = 2.3f;
-    [SerializeField]
-    private float _gravityMaxSpeed = -12f;
+    private float _weight = 4f;
 
-    private Vector3 _localPos;
     private bool _gameInPlay = false;
 
+    private Vector3 _localPos;
     private float _ground = 0f;
+    private bool _isJumping = false;
+    private float _jumpTimer = 0f;
+
+    private Vector3 _hitVel = new Vector3();
+    private Vector3 _jumpTarget = new Vector3();
+    private Vector3 _jumpVel = new Vector3();
+    private Vector3 _speedVel = new Vector3();
+
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +54,10 @@ public class CharacterMove : MonoBehaviour, IObservable
             this.Jump();
         }
 
+        this.updateHit();
+        this.updateJump();
+        this.updateSpeed();
+
         this.Move();
     }
 
@@ -61,11 +69,16 @@ public class CharacterMove : MonoBehaviour, IObservable
 
     void Move()
     {
+        var xPos = this._localPos.x;
+        var yPos = this._localPos.y;
 
-        this.updateHit();
+        xPos += Time.deltaTime * _speedVel.x;
+        xPos += Time.deltaTime * _hitVel.x;
+        xPos += Time.deltaTime * _jumpVel.x;
 
-        var xPos = this.MoveForward();
-        var yPos = this.JumpUpdate();
+        yPos += Time.deltaTime * _speedVel.y;
+        yPos += Time.deltaTime * _hitVel.y;
+        yPos += Time.deltaTime * _jumpVel.y;
 
         if (yPos < this._ground)
         {
@@ -75,13 +88,31 @@ public class CharacterMove : MonoBehaviour, IObservable
         this.transform.position = new Vector3(xPos, yPos, 0f);
     }
 
-    private Vector3 _inertiaHit = new Vector3();
 
-    void OnTriggerEnter(Collider hitBy)
+
+    void updateSpeed()
+    {
+        if (_isJumping)
+        {
+            _speedVel = Vector3.Lerp(_speedVel, Vector3.zero, Time.deltaTime);
+            return;
+        }
+
+        _speedVel = Vector3.Lerp(_speedVel, _speed, Time.deltaTime * _speedMax);
+    }
+
+    void OnTriggerEnter(Collider hitBy) { this.TriggerCol(hitBy); }
+
+    void OnTriggerStay(Collider hitBy) { this.TriggerCol(hitBy); }
+
+    void OnTriggerExit(Collider hitBy) { this.TriggerCol(hitBy); }
+
+
+    void TriggerCol(Collider hitBy)
     {
         var force = 2f;
 
-        if(hitBy.CompareTag("Bounce"))
+        if (hitBy.CompareTag("Bounce"))
         {
             force = 5f;
         }
@@ -91,99 +122,49 @@ public class CharacterMove : MonoBehaviour, IObservable
             force = 13f;
         }
 
-        _isFalling = true;
-        _playerFallVel = 0f;
-        _intertiaForward = 0f;
-        _inertiaHit = (this.transform.position - hitBy.transform.position) * force;
+        _isJumping = true;
+        _jumpVel = Vector3.zero;
+        _jumpTimer = _jumpDelay;
+        _jumpTarget = Vector3.zero;
+        _hitVel = Vector3.zero;
+        _hitVel += (this.transform.position - hitBy.transform.position) * force;
     }
-
-    void updateHit()
-    {
-        _inertiaHit = Vector3.Lerp(_inertiaHit, Vector3.zero, Time.deltaTime * 5f);
-    }
-    
-
-    private float _intertiaForward = 0f;
-
-    float MoveForward ()
-    {
-        _intertiaForward = Mathf.Lerp(_intertiaForward, this._speedMaxRight, Time.deltaTime * this._speedRight);
-
-        if (Mathf.Abs(this._inertiaHit.x) > 0.1f)
-        {
-            _intertiaForward = this._inertiaHit.x;
-        }
-
-        return this._localPos.x + _intertiaForward * Time.deltaTime;
-    }
-
-
-    private bool _isJumping = false;
-    private bool _isPeaked = false;
-    private bool _isFalling = false;
-
-    private float _jumpTarget = 0f;
-    private float _jumpPeakDelay = 0f;
-    private float _jumpMSVel = 0f;
-    private float _playerFallVel = 0f;
 
 
     void Jump()
     {
-        _isJumping = true;
-        _isPeaked = false;
-        _isFalling = false;
-
-        this._jumpMSVel = this._jumpMS;
-        this._playerFallVel = 0f;
-        this._jumpPeakDelay = this._jumpPeak;
-        this._jumpTarget = this._localPos.y + this._jump;
-    }
-
-    float JumpUpdate()
-    {
-        var yPos = this._localPos.y;
-
-        if (_isJumping || _isPeaked)
-        {
-            yPos = Mathf.Lerp(yPos, this._jumpTarget, Time.deltaTime * this._jumpMSVel);
-        }
-
         if (_isJumping)
         {
-            var diff = Mathf.Abs(yPos - this._jumpTarget);
-            if (diff < _jumpPeakDiff)
-            {
-                _isJumping = false;
-                _isPeaked = true;
-            }
+            return;
         }
 
-        if (_isPeaked)
+        _isJumping = true;
+        _jumpVel = _jump;
+        _jumpTimer = _jumpDelay;
+        _jumpTarget = _localPos + _jump;
+    }
+
+    void updateHit()
+    {
+        _hitVel = Vector3.Lerp(_hitVel, Vector3.zero, Time.deltaTime * 5f);
+    }
+
+    void updateJump()
+    {
+        if (_jumpTimer > 0f)
         {
-            this._jumpMSVel = Mathf.Lerp(this._jumpMSVel, 0.1f, Time.deltaTime * this._jumpMS);
-            _jumpPeakDelay -= Time.deltaTime;
-
-            if (_jumpPeakDelay < 0f)
-            {
-                _isPeaked = false;
-                _isFalling = true;
-            }
+            _jumpTimer -= Time.deltaTime;
         }
 
-        if (_isFalling)
+        _isJumping = _jumpTimer > 0f;
+
+        if (_isJumping && _jumpTarget != Vector3.zero)
         {
-            this._playerFallVel = Mathf.Lerp(this._playerFallVel, this._gravityMaxSpeed, Time.deltaTime * this._gravityMS);
+            _localPos = Vector3.Lerp(_localPos, _jumpTarget, Time.deltaTime * 5f);
+            return;
         }
 
-        if( Mathf.Abs(this._inertiaHit.y) > 0.1f)
-        {
-            this._playerFallVel += this._inertiaHit.y;
-        }
-
-        yPos += this._playerFallVel * Time.deltaTime;
-
-        return yPos;
+        _jumpVel = Vector3.Lerp(_jumpVel, (_gravity * _weight), Time.deltaTime);
     }
 
 

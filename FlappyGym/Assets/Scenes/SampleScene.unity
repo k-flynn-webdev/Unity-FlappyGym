@@ -1051,14 +1051,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1921ab24e281545c18fdcdb70fde5471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedRight: 2
-  _speedMaxRight: 3
-  _jump: 3
-  _jumpPeakDiff: 0.2
-  _jumpPeak: 0.166
-  _jumpMS: 10
-  _gravityMS: 5
-  _gravityMaxSpeed: -25
+  _speed: {x: 4, y: 0, z: 0}
+  _speedMax: 2
+  _jump: {x: 0, y: 3, z: 0}
+  _jumpDelay: 0.3
+  _gravity: {x: 0, y: -9, z: 0}
+  _weight: 4
 --- !u!65 &1302467917
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1305,7 +1303,7 @@ GameObject:
   - component: {fileID: 1538459619}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Bounce
+  m_TagString: Death
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1388,7 +1386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538459618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.99, y: 0.52, z: 0}
+  m_LocalPosition: {x: 2.84, y: 0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
