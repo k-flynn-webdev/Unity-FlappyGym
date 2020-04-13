@@ -10,6 +10,8 @@ public class CharacterMove : MonoBehaviour, IObservable
     [SerializeField]
     private float _speedMax = 2f;
     [SerializeField]
+    private bool _slowWhenJumping = true;
+    [SerializeField]
     private Vector3 _jump = new Vector3();
     [SerializeField]
     private float _jumpDelay = 0.3f;
@@ -22,6 +24,7 @@ public class CharacterMove : MonoBehaviour, IObservable
     private bool _gameInPlay = false;
 
     private Vector3 _localPos;
+    [SerializeField]
     private float _ground = 0f;
     private bool _isJumping = false;
     private float _jumpTimer = 0f;
@@ -92,7 +95,7 @@ public class CharacterMove : MonoBehaviour, IObservable
 
     void updateSpeed()
     {
-        if (_isJumping)
+        if (_isJumping && _slowWhenJumping)
         {
             _speedVel = Vector3.Lerp(_speedVel, Vector3.zero, Time.deltaTime);
             return;
