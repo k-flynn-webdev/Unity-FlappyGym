@@ -7,7 +7,6 @@ using UnityEditor;
 [CustomEditor(typeof(GameState))]
 public class SomeScriptEditor : Editor
 {
-
     public GameStateObj.gameStates newState;
 
     public override void OnInspectorGUI()
@@ -27,13 +26,14 @@ public class SomeScriptEditor : Editor
 public class GameState : MonoBehaviour, IObservable 
 {
 
-
     [SerializeField]
     private GameStateObj _gameState = new GameStateObj();
 
     [SerializeField]
-    public GameStateObj.gameStates state
-    { get { return this._gameState.state; } }
+    private GameStateObj.gameStates _state;
+    [SerializeField]
+    private GameStateObj.gameStates _last;
+
 
     void Awake()
     {
@@ -71,6 +71,10 @@ public class GameState : MonoBehaviour, IObservable
     {
         this._gameState.last = this._gameState.state;
         this._gameState.state = state;
+
+        this._state = state;
+        this._last = this._gameState.last;
+
         this.Notify();
     }
 
