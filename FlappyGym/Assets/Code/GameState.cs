@@ -40,6 +40,11 @@ public class GameState : MonoBehaviour, IObservable
         ServiceLocator.Register<GameState>(this);
     }
 
+    private void Start()
+    {
+        SetState(GameStateObj.gameStates.Load);
+    }
+
     public void ChangeState(GameStateObj.gameStates state)
     {
         if (this._gameState.state == state)
@@ -77,6 +82,12 @@ public class GameState : MonoBehaviour, IObservable
 
         this.Notify();
     }
+
+
+    public void SetStateMain() { SetState(GameStateObj.gameStates.Main); }
+    public void SetStatePlay() { SetState(GameStateObj.gameStates.Play); }
+    public void SetStatePause() { SetState(GameStateObj.gameStates.Pause); }
+    public void SetStateOver() { SetState(GameStateObj.gameStates.Over); }
 
 
     public List<IObservable> Subscribers

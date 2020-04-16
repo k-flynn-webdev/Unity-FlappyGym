@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameStateObj
 {
 
-    public enum gameStates { Load, Main, Play, Pause, Over };
+    public enum gameStates { Init, Load, Main, Play, Pause, Over };
 
     [SerializeField]
     public gameStates state;

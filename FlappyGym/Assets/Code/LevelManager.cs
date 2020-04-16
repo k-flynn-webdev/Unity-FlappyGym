@@ -145,13 +145,12 @@ public class LevelManager : MonoBehaviour, IObservable
             case GameStateObj.gameStates.Pause:
                 PauseLevel();
                 break;
+            case GameStateObj.gameStates.Over:
+                OverLevel();
+                break;
         }
     }
 
     public void Subscribe(IObservable listener) { }
     public void UnSubscribe(IObservable listener) { }
-
-
-
-
 }
