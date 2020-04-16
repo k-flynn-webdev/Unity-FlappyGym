@@ -19,6 +19,11 @@ public class UIState : MonoBehaviour, IObservable
     [SerializeField]
     public bool _over = false;
 
+    void Awake()
+    {
+        _uiGO.SetActive(false);
+    }
+
     void Start()
     {
         ServiceLocator.Resolve<GameState>().Subscribe(this);
