@@ -8,12 +8,14 @@ public class Level_01 : Level
     [SerializeField]
     private ObjectPoolItem _player;
 
-    void Start()
+    public override void Setup()
     {
         _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player");
+
+        base.Setup();
     }
 
-    private void OnDestroy()
+    public override void UnLoad()
     {
         if (_player == null)
         {

@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class ObjectPoolInfo
 {
-    [SerializeField]
     public ObjectPoolItem prefab;
-    [SerializeField]
     public List<ObjectPoolItem> items = new List<ObjectPoolItem>();
 
     public ObjectPoolInfo(ObjectPoolItem item)

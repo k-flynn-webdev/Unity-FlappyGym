@@ -32,7 +32,6 @@ public class ObjectPoolItem : MonoBehaviour
 
     private bool _isActive = false;
 
-
     public void IsActive()
     {
         _isActive = true;
