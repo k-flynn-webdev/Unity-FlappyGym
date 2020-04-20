@@ -6,6 +6,9 @@ using UnityEngine;
 public class GameLoader : MonoBehaviour, ISubscribe
 {
 
+    [SerializeField]
+    private float _waitTime = 3f;
+
     void Awake()
     {
         ServiceLocator.Register<GameLoader>(this);
@@ -19,7 +22,7 @@ public class GameLoader : MonoBehaviour, ISubscribe
     IEnumerator BeginGame()
     {
         Debug.Log("Loading game");
-        yield return new WaitForSeconds(6.0f);
+        yield return new WaitForSeconds(_waitTime);
         Debug.Log("Starting game");
         ServiceLocator.Resolve<GameState>().SetState(GameStateObj.gameStates.Main);
     }

@@ -23,12 +23,14 @@ public class ObjectPoolInfo
             if (!items[i].Active)
             {
                 items[i].IsActive();
+                ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
                 return items[i];
             }
         }
 
         ObjectPoolItem tmpItem = this.prefab.CreateItem();
         this.items.Add(tmpItem);
+        ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
         return tmpItem;
     }
 }

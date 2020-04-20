@@ -43,6 +43,7 @@ public class ObjectPoolItem : MonoBehaviour
     {
         _isActive = false;
         this.gameObject.SetActive(false);
+        ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
     }
 
     public ObjectPoolItem CreateItem()

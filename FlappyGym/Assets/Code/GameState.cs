@@ -13,13 +13,21 @@ public class SomeScriptEditor : Editor
     {
         DrawDefaultInspector();
 
+        GUILayout.Space(10f);
+
+        GUILayout.BeginHorizontal();
+
         newState = (GameStateObj.gameStates)EditorGUILayout.EnumPopup(newState);
+
+        GUILayout.Space(50f);
 
         GameState myScript = (GameState)target;
         if (GUILayout.Button("Change"))
         {
             myScript.ChangeState(newState);
         }
+
+        GUILayout.EndHorizontal();
     }
 }
 
