@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6860845655762458404}
   - component: {fileID: 2772093208735014806}
-  - component: {fileID: 114373286633059612}
+  - component: {fileID: 114485922974596404}
   m_Layer: 0
   m_Name: GameLoader
   m_TagString: Untagged
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _items: []
---- !u!114 &114373286633059612
+--- !u!114 &114485922974596404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,4 +57,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dae93182dbf44c60ae7fff49652b596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemPrefabsList: []
+  ItemPrefabsAsset: {fileID: 11400000, guid: b0d0b7744f1d44160b20876730a75590, type: 2}

@@ -6,12 +6,6 @@ using UnityEngine;
 public class GameLoader : MonoBehaviour, ISubscribe
 {
 
-    // todo this is my object pooler / loader
-
-    [SerializeField]
-    private GameObject[] _items;
-
-
     void Awake()
     {
         ServiceLocator.Register<GameLoader>(this);

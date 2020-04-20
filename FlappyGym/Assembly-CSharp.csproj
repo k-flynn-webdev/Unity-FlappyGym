@@ -73,6 +73,7 @@
     <Compile Include="Assets\Code\interfaces\ISubscribe.cs" />
     <Compile Include="Assets\Code\Level_01.cs" />
     <Compile Include="Assets\Code\LevelManager.cs" />
+    <Compile Include="Assets\Code\ObjectPoolAssets.cs" />
     <Compile Include="Assets\Code\ObjectPoolItem.cs" />
     <Compile Include="Assets\Code\ObjectPoolManager.cs" />
     <Compile Include="Assets\Code\Player.cs" />
