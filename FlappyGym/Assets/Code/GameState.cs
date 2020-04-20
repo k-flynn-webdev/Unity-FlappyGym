@@ -23,7 +23,7 @@ public class SomeScriptEditor : Editor
     }
 }
 
-public class GameState : MonoBehaviour, IObservable 
+public class GameState : MonoBehaviour, IPublish
 {
 
     [SerializeField]
@@ -84,16 +84,16 @@ public class GameState : MonoBehaviour, IObservable
     }
 
 
-    public void SetStateMain() { SetState(GameStateObj.gameStates.Main); }
-    public void SetStatePlay() { SetState(GameStateObj.gameStates.Play); }
-    public void SetStatePause() { SetState(GameStateObj.gameStates.Pause); }
-    public void SetStateOver() { SetState(GameStateObj.gameStates.Over); }
+    public void SetStateMain() => SetState(GameStateObj.gameStates.Main);
+    public void SetStatePlay() => SetState(GameStateObj.gameStates.Play);
+    public void SetStatePause() => SetState(GameStateObj.gameStates.Pause);
+    public void SetStateOver() => SetState(GameStateObj.gameStates.Over);
 
 
-    public List<IObservable> Subscribers
+    public List<ISubscribe> Subscribers
     { get { return this.subscribers; } }
     
-    private List<IObservable> subscribers = new List<IObservable>();
+    private List<ISubscribe> subscribers = new List<ISubscribe>();
 
     public void Notify()
     {
@@ -103,11 +103,9 @@ public class GameState : MonoBehaviour, IObservable
         }
     }
 
-    public void React(GameStateObj state) { }
-
-    public void Subscribe(IObservable listener)
+    public void Subscribe(ISubscribe listener)
     { subscribers.Add(listener); }
 
-    public void UnSubscribe(IObservable listener)
+    public void UnSubscribe(ISubscribe listener)
     { subscribers.Remove(listener); }
 }

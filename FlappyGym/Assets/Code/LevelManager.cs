@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour, IObservable
+public class LevelManager : MonoBehaviour, ISubscribe
 {
 
     [SerializeField]
     private Level[] Levels;
 
     [SerializeField]
-    private Level _current;
+    private Level _current = null;
 
 
     void Awake()
@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour, IObservable
         if (levelToLoad.Id != _current.Id)
         {
             UnloadLevel();
-            _current = Instantiate(levelToLoad);
+            _current = Instantiate(levelToLoad, new Vector3(0, 0, 0), Quaternion.identity);
             SetupLevel();
         }
     }
@@ -120,13 +120,6 @@ public class LevelManager : MonoBehaviour, IObservable
     }
 
 
-
-
-    public List<IObservable> Subscribers
-    { get; }
-
-    public void Notify() { }
-
     public void React(GameStateObj state)
     {
         switch (state.state)
@@ -150,7 +143,4 @@ public class LevelManager : MonoBehaviour, IObservable
                 break;
         }
     }
-
-    public void Subscribe(IObservable listener) { }
-    public void UnSubscribe(IObservable listener) { }
 }

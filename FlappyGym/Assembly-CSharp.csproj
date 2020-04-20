@@ -66,11 +66,15 @@
     <Compile Include="Assets\Code\CharacterMove.cs" />
     <Compile Include="Assets\Code\defs\GameStateObj.cs" />
     <Compile Include="Assets\Code\defs\Level.cs" />
+    <Compile Include="Assets\Code\defs\ObjectPoolInfo.cs" />
     <Compile Include="Assets\Code\GameLoader.cs" />
     <Compile Include="Assets\Code\GameState.cs" />
-    <Compile Include="Assets\Code\interfaces\IObservable.cs" />
+    <Compile Include="Assets\Code\interfaces\IPublish.cs" />
+    <Compile Include="Assets\Code\interfaces\ISubscribe.cs" />
     <Compile Include="Assets\Code\Level_01.cs" />
     <Compile Include="Assets\Code\LevelManager.cs" />
+    <Compile Include="Assets\Code\ObjectPoolItem.cs" />
+    <Compile Include="Assets\Code\ObjectPoolManager.cs" />
     <Compile Include="Assets\Code\Player.cs" />
     <Compile Include="Assets\Code\ServiceLocator.cs" />
     <Compile Include="Assets\Code\UIState.cs" />

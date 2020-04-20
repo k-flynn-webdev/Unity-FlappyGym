@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CharacterMove : MonoBehaviour, IObservable
+public class CharacterMove : MonoBehaviour, ISubscribe
 {
     [SerializeField]
     private Vector3 _speed = new Vector3();
@@ -170,16 +170,7 @@ public class CharacterMove : MonoBehaviour, IObservable
         _jumpVel = Vector3.Lerp(_jumpVel, (_gravity * _weight), Time.deltaTime);
     }
 
-
-    public List<IObservable> Subscribers
-    { get; }
-
-    public void Notify(){}
-
     public void React(GameStateObj state) {
         _gameInPlay = state.state == GameStateObj.gameStates.Play;
     }
-
-    public void Subscribe(IObservable listener){}
-    public void UnSubscribe(IObservable listener){}
 }

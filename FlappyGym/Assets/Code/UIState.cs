@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIState : MonoBehaviour, IObservable
+public class UIState : MonoBehaviour, ISubscribe
 {
 
     [SerializeField]
@@ -22,17 +22,13 @@ public class UIState : MonoBehaviour, IObservable
     void Awake()
     {
         _uiGO.SetActive(false);
+        ServiceLocator.Resolve<GameState>().Subscribe(this);
     }
 
     void Start()
     {
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
+        //ServiceLocator.Resolve<GameState>().Subscribe(this);
     }
-
-    public List<IObservable> Subscribers
-    { get; }
-
-    public virtual void Notify() { }
 
     public virtual void React(GameStateObj state)
     {
@@ -64,7 +60,4 @@ public class UIState : MonoBehaviour, IObservable
             return;
         }
     }
-
-    public virtual void Subscribe(IObservable listener) { }
-    public virtual void UnSubscribe(IObservable listener) { }
 }

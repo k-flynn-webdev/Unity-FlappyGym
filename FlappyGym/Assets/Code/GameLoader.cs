@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameLoader : MonoBehaviour, IObservable
+public class GameLoader : MonoBehaviour, ISubscribe
 {
 
     // todo this is my object pooler / loader
@@ -30,11 +30,6 @@ public class GameLoader : MonoBehaviour, IObservable
         ServiceLocator.Resolve<GameState>().SetState(GameStateObj.gameStates.Main);
     }
 
-    public List<IObservable> Subscribers
-    { get; }
-
-    public void Notify() { }
-
     public void React(GameStateObj state)
     {
         switch (state.state)
@@ -52,7 +47,4 @@ public class GameLoader : MonoBehaviour, IObservable
                 break;
         }
     }
-
-    public void Subscribe(IObservable listener) { }
-    public void UnSubscribe(IObservable listener) { }
 }

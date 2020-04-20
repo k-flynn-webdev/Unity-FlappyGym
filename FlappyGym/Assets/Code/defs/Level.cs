@@ -12,7 +12,7 @@ public abstract class Level: MonoBehaviour
         Debug.Log("Setup");
         // do things
         // now go title ..
-        this.Title();
+        Title();
     }
 
     public virtual void Title()
@@ -44,6 +44,7 @@ public abstract class Level: MonoBehaviour
     public virtual void UnLoad()
     {
         Debug.Log("Unload");
+        Destroy(this.gameObject, 5f);
         // kills self and removes GO
     }
 }
