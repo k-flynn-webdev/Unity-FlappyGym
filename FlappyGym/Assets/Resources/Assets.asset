@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Assets
   m_EditorClassIdentifier: 
   Assets:
+  - {fileID: 114709542471235828, guid: 56ebcc70f8db4472db5b736dc9c85924, type: 3}
   - {fileID: 391191848156772620, guid: 0b23e781d8383499cb63d2dabbb1a958, type: 3}

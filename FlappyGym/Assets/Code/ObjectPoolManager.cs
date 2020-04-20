@@ -39,7 +39,7 @@ public class ObjectPoolManager : MonoBehaviour
 {
 
     [SerializeField]
-    private static readonly Dictionary<string, ObjectPoolInfo>
+    private readonly Dictionary<string, ObjectPoolInfo>
     ItemPrefabs = new Dictionary<string, ObjectPoolInfo>();
 
     [SerializeField]
@@ -72,6 +72,11 @@ public class ObjectPoolManager : MonoBehaviour
 
     public ObjectPoolItem GetItem(string item)
     {
+        if (!ItemPrefabs.ContainsKey(item))
+        {
+            return null;
+        }
+
         Debug.Log("Getting " + item);
         return ItemPrefabs[item].GetItem();
     }
@@ -82,14 +87,16 @@ public class ObjectPoolManager : MonoBehaviour
         _active = 0;
         _total = 0;
 
-        Debug.Log("counting");
-
         foreach (var item in ItemPrefabs)
         {
-            _types += 1;
-            _total = item.Value.items.Count;
+            _total += item.Value.items.Count;
 
-            for (int i = 0; i < _total; i++)
+            if (item.Value.items.Count > 0)
+            {
+                _types += 1;
+            }
+            
+            for (int i = 0; i < item.Value.items.Count; i++)
             {
                 if (item.Value.items[i].Active)
                 {
