@@ -71,6 +71,7 @@
     <Compile Include="Assets\Code\GameState.cs" />
     <Compile Include="Assets\Code\interfaces\IPublish.cs" />
     <Compile Include="Assets\Code\interfaces\ISubscribe.cs" />
+    <Compile Include="Assets\Code\Item.cs" />
     <Compile Include="Assets\Code\Level_01.cs" />
     <Compile Include="Assets\Code\LevelManager.cs" />
     <Compile Include="Assets\Code\ObjectPoolAssets.cs" />

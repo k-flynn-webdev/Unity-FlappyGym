@@ -30,6 +30,7 @@ public class ObjectPoolItem : MonoBehaviour
     public bool Active
     { get { return this._isActive; } }
 
+    [SerializeField]
     private bool _isActive = false;
 
     public void IsActive()
