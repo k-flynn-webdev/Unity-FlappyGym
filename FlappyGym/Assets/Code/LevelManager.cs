@@ -81,10 +81,17 @@ public class LevelManager : MonoBehaviour, ISubscribe
 
     void PlayLevel(GameStateObj state)
     {
-        if (_current != null)
+        if (_current == null)
         {
-            _current.Play();
+            return;
         }
+
+        if (state.last == GameStateObj.gameStates.Over)
+        {
+            ResetLevel();
+        }
+
+        _current.Play();
     }
 
     void ResetLevel()
@@ -130,6 +137,7 @@ public class LevelManager : MonoBehaviour, ISubscribe
                     LoadALevel();
                     break;
                 }
+                ResetLevel();
                 TitleLevel();
                 break;
             case GameStateObj.gameStates.Play:

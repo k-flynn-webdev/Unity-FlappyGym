@@ -35,13 +35,20 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     private Vector3 _speedVel = new Vector3();
 
 
-    // Start is called before the first frame update
     void Start()
     {
         ServiceLocator.Resolve<GameState>().Subscribe(this);
     }
 
-    // Update is called once per frame
+    public void Reset ()
+    {
+        _jumpTimer = 0f;
+        _hitVel = new Vector3();
+        _jumpTarget = new Vector3();
+        _jumpVel = new Vector3();
+        _speedVel = new Vector3();
+    }
+
     void Update()
     {
         if (!_gameInPlay)

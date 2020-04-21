@@ -92,10 +92,10 @@ public class GameState : MonoBehaviour, IPublish
     }
 
 
-    public void SetStateMain() => SetState(GameStateObj.gameStates.Main);
-    public void SetStatePlay() => SetState(GameStateObj.gameStates.Play);
-    public void SetStatePause() => SetState(GameStateObj.gameStates.Pause);
-    public void SetStateOver() => SetState(GameStateObj.gameStates.Over);
+    public void SetStateMain() => ChangeState(GameStateObj.gameStates.Main);
+    public void SetStatePlay() => ChangeState(GameStateObj.gameStates.Play);
+    public void SetStatePause() => ChangeState(GameStateObj.gameStates.Pause);
+    public void SetStateOver() => ChangeState(GameStateObj.gameStates.Over);
 
 
     public List<ISubscribe> Subscribers

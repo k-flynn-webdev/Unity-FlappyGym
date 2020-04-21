@@ -17,6 +17,7 @@ public class ObjectPoolManagerEditor : Editor
         GUILayout.Space(10f);
 
         GUILayout.BeginHorizontal();
+        EditorGUILayout.Separator();
         EditorGUIUtility.labelWidth = 40f;
         EditorGUILayout.PrefixLabel("Types");
         EditorGUILayout.IntField(myScript._types, GUILayout.Width(40f));
@@ -24,6 +25,7 @@ public class ObjectPoolManagerEditor : Editor
         EditorGUILayout.IntField(myScript._active, GUILayout.Width(40f));
         EditorGUILayout.PrefixLabel("Total");
         EditorGUILayout.IntField(myScript._total, GUILayout.Width(40f));
+        EditorGUILayout.Separator();
         GUILayout.EndHorizontal();
 
         GUILayout.Space(10f);
@@ -74,6 +76,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if (!ItemPrefabs.ContainsKey(item))
         {
+            Debug.Log(item + " key does not exist - object manager");
             return null;
         }
 
