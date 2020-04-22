@@ -30,8 +30,8 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     private float _jumpTimer = 0f;
 
     private Vector3 _hitVel = new Vector3();
-    private Vector3 _jumpTarget = new Vector3();
-    private Vector3 _jumpVel = new Vector3();
+    //private Vector3 _jumpTarget = new Vector3();
+    private Vector3 _inertiaVel = new Vector3();
     private Vector3 _speedVel = new Vector3();
 
 
@@ -44,8 +44,8 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     {
         _jumpTimer = 0f;
         _hitVel = new Vector3();
-        _jumpTarget = new Vector3();
-        _jumpVel = new Vector3();
+        //_jumpTarget = new Vector3();
+        _inertiaVel = new Vector3();
         _speedVel = new Vector3();
     }
 
@@ -82,13 +82,13 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         var xPos = this._localPos.x;
         var yPos = this._localPos.y;
 
-        xPos += Time.deltaTime * _speedVel.x;
         xPos += Time.deltaTime * _hitVel.x;
-        xPos += Time.deltaTime * _jumpVel.x;
+        xPos += Time.deltaTime * _inertiaVel.x;
+        xPos += Time.deltaTime * _speedVel.x;
 
-        yPos += Time.deltaTime * _speedVel.y;
         yPos += Time.deltaTime * _hitVel.y;
-        yPos += Time.deltaTime * _jumpVel.y;
+        yPos += Time.deltaTime * _inertiaVel.y;
+        yPos += Time.deltaTime * _speedVel.y;
 
         if (yPos < this._ground)
         {
@@ -133,9 +133,9 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         }
 
         _isJumping = true;
-        _jumpVel = Vector3.zero;
+        _inertiaVel = Vector3.zero;
         _jumpTimer = _jumpDelay;
-        _jumpTarget = Vector3.zero;
+        //_jumpTarget = Vector3.zero;
         _hitVel = Vector3.zero;
         _hitVel += (this.transform.position - hitBy.transform.position) * force;
     }
@@ -149,14 +149,14 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         }
 
         _isJumping = true;
-        _jumpVel = _jump;
+        _inertiaVel = _jump * _weight;
         _jumpTimer = _jumpDelay;
-        _jumpTarget = _localPos + _jump;
+        //_jumpTarget = _localPos + _jump + _speedVel;
     }
 
     void updateHit()
     {
-        _hitVel = Vector3.Lerp(_hitVel, Vector3.zero, Time.deltaTime * 5f);
+        _hitVel = Vector3.Lerp(_hitVel, Vector3.zero, Time.deltaTime);
     }
 
     void updateJump()
@@ -168,13 +168,9 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
         _isJumping = _jumpTimer > 0f;
 
-        if (_isJumping && _jumpTarget != Vector3.zero)
-        {
-            _localPos = Vector3.Lerp(_localPos, _jumpTarget, Time.deltaTime * 5f);
-            return;
-        }
+        Vector3 newGoal = Vector3.Lerp(_gravity, _jump, (_jumpTimer / _jumpDelay));
 
-        _jumpVel = Vector3.Lerp(_jumpVel, (_gravity * _weight), Time.deltaTime);
+        _inertiaVel = Vector3.Lerp(_inertiaVel, newGoal, Time.deltaTime);
     }
 
     public void React(GameStateObj state) {

@@ -6,6 +6,8 @@ public abstract class Level: MonoBehaviour
 {
     [SerializeField]
     public int Id = 0;
+    [SerializeField]
+    public bool _isPlaying = false;
 
     public virtual void Setup()
     {
@@ -13,15 +15,18 @@ public abstract class Level: MonoBehaviour
         // do things
         // now go title ..
         Title();
+        _isPlaying = false;
     }
 
     public virtual void Title()
     {
         Debug.Log("Title");
+        _isPlaying = false;
     }
 
     public virtual void Play()
     {
+        _isPlaying = true;
         Debug.Log("Play");
     }
 
@@ -32,17 +37,20 @@ public abstract class Level: MonoBehaviour
 
     public virtual void Pause()
     {
+        _isPlaying = false;
         Debug.Log("Pause");
     }
 
     // win / fail scenario
     public virtual void Over()
     {
+        _isPlaying = false;
         Debug.Log("Over");
     }
 
     public virtual void UnLoad()
     {
+        _isPlaying = false;
         Debug.Log("Unload");
         Destroy(this.gameObject, 5f);
         // kills self and removes GO

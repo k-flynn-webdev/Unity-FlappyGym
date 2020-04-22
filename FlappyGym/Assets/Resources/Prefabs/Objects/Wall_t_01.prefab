@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _top: 20
-  _bottom: 10
+  _bottom: 15
   _random: 1
 --- !u!1 &4307938839939566061
 GameObject:

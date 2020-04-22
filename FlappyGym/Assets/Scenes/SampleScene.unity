@@ -815,9 +815,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
   _targetDefault: {fileID: 1298802679}
-  _followAxes: {x: 1.2, y: 0.2, z: 0}
+  _followAxes: {x: 1.1, y: 1.1, z: 0}
   _followOffset: {x: 15, y: 0, z: -10}
-  _followSmoothing: {x: 1, y: 1, z: 1}
+  _followSmoothing: {x: 1.1, y: 0.2, z: 1}
   _targetLocal: {fileID: 0}
 --- !u!1 &551515639
 GameObject:

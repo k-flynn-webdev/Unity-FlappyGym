@@ -18,6 +18,26 @@ public class Level_01 : Level
     private Vector3 _startPos;
 
 
+    [SerializeField]
+    private float _xProgress = 0f;
+
+    private float _levelSize = 50f;
+    private float _xlevelMin = 0f;
+    private float _xlevelMax = 0f;
+
+    private void Update()
+    {
+        if (_isPlaying)
+        {
+            _xProgress = _player.transform.position.x;
+
+            if (_xProgress + _levelSize > _xlevelMax)
+            {
+                UpdateWalls();
+            }
+        }
+    }
+
     public override void Setup()
     {
         _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player");
@@ -38,8 +58,9 @@ public class Level_01 : Level
 
     public override void Reset()
     {
+        _xProgress = 0f;
         ResetPlayer();
-        SetupWalls(10f, 70f);
+        SetupWalls();
         base.Reset();
     }
 
@@ -63,11 +84,29 @@ public class Level_01 : Level
     }
 
 
-    private void SetupWalls(float xMin, float xMax)
+    private void SetupWalls()
     {
+        _xlevelMin = _xProgress - _levelSize;
+        _xlevelMax = _xProgress + _levelSize;
+
         for (int i = 0; i < _wallItems.Count; i++)
         {
-            _wallItems[i].Place(Mathf.Lerp(xMin,xMax, (1f/ _wallItems.Count) * i ));
+            _wallItems[i].Place(Mathf.Lerp(_xlevelMin, _xlevelMax, (1f/ _wallItems.Count) * i ));
+        }
+    }
+
+    private void UpdateWalls()
+    {
+        _xlevelMin = _xProgress - _levelSize;
+        _xlevelMax = _xProgress + _levelSize;
+
+        for (int i = 0; i < _wallItems.Count; i++)
+        {
+            if (_wallItems[i].transform.position.x < _xlevelMin)
+            {
+                _wallItems[i].Place(_xlevelMax);
+                return;
+            }
         }
     }
 

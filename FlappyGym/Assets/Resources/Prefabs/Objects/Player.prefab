@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13452eb01cf241a29243ce56cbde60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isActive: 0
 --- !u!114 &2999499061133951586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,14 +73,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1921ab24e281545c18fdcdb70fde5471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: {x: 4, y: 0, z: 0}
-  _speedMax: 2
+  _speed: {x: 8, y: 0, z: 0}
+  _speedMax: 4
   _slowWhenJumping: 0
-  _jump: {x: 0, y: 3.66, z: 0}
+  _jump: {x: 0, y: 4, z: 0}
   _jumpDelay: 0.33
   _gravity: {x: 0, y: -50, z: 0}
-  _weight: 0.5
-  _ground: -13
+  _weight: 3
+  _ground: 0
 --- !u!54 &2999499061133951591
 Rigidbody:
   m_ObjectHideFlags: 0
