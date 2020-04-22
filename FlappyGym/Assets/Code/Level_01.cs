@@ -47,6 +47,12 @@ public class Level_01 : Level
     public override void Title()
     {
         Reset();
+        ServiceLocator.Resolve<CameraControl>().SetTarget(_player.transform);
+    }
+
+    public override void Play()
+    {
+        base.Play();
     }
 
     private void ResetPlayer()
@@ -72,6 +78,7 @@ public class Level_01 : Level
             return;
         }
 
+        ServiceLocator.Resolve<CameraControl>().SetTarget();
         _player.IsNotActive();
 
         base.UnLoad();
