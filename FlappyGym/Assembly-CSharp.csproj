@@ -72,6 +72,7 @@
     <Compile Include="Assets\Code\GameState.cs" />
     <Compile Include="Assets\Code\GameStateUI.cs" />
     <Compile Include="Assets\Code\interfaces\IPublish.cs" />
+    <Compile Include="Assets\Code\interfaces\IReset.cs" />
     <Compile Include="Assets\Code\interfaces\ISubscribe.cs" />
     <Compile Include="Assets\Code\Item.cs" />
     <Compile Include="Assets\Code\Level_01.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Assets\Code\ObjectPoolItem.cs" />
     <Compile Include="Assets\Code\ObjectPoolManager.cs" />
     <Compile Include="Assets\Code\Player.cs" />
+    <Compile Include="Assets\Code\ScoreItem.cs" />
     <Compile Include="Assets\Code\ScoreManager.cs" />
     <Compile Include="Assets\Code\ServiceLocator.cs" />
     <Compile Include="Assets\Code\UIState.cs" />

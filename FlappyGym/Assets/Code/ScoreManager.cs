@@ -22,10 +22,22 @@ public class ScoreManager : MonoBehaviour, ISubscribe
     [SerializeField]
     private Text _ScoreText;
 
+    private GameStateObj.gameStates _state;
+
     public void SetScore(float newScore)
     {
         _score = newScore;
         _ScoreText.text = _score.ToString();
+    }
+
+    public void AddScore(float addScore)
+    {
+        if (_state != GameStateObj.gameStates.Play)
+        {
+            return;
+        }
+
+        SetScore(Score + addScore);
     }
 
     void Awake()
@@ -40,6 +52,7 @@ public class ScoreManager : MonoBehaviour, ISubscribe
 
     public void React(GameStateObj state)
     {
+        _state = state.state;
         _displayLarge = state.state == GameStateObj.gameStates.Over;
 
         _ScoreUI.transform.localScale = Vector3.one;

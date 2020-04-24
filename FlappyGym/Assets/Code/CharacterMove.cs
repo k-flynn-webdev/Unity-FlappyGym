@@ -113,16 +113,24 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
     void TriggerCol(Collider hitBy)
     {
-        var force = 2f;
+        bool isBounce = false;
+        float force = 2f;
 
         if (hitBy.CompareTag("Bounce"))
         {
             force = 5f;
+            isBounce = true;
         }
 
         if (hitBy.tag == "Death")
         {
             force = 13f;
+            isBounce = true;
+        }
+
+        if (!isBounce)
+        {
+            return;
         }
 
         _isJumping = true;

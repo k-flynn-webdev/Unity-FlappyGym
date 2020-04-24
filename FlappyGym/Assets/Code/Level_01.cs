@@ -57,8 +57,9 @@ public class Level_01 : Level
     public override void Reset()
     {
         _xProgress = 0f;
-        ResetPlayer();
         SetupWalls();
+        ResetPlayer();
+        ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
         base.Reset();
     }
 
