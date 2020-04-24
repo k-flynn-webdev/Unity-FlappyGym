@@ -22,15 +22,14 @@ public class UIState : MonoBehaviour, ISubscribe
     void Awake()
     {
         _uiGO.SetActive(false);
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
     }
 
     void Start()
     {
-        //ServiceLocator.Resolve<GameState>().Subscribe(this);
+        ServiceLocator.Resolve<GameState>().Subscribe(this);
     }
 
-    public virtual void React(GameStateObj state)
+    public void React(GameStateObj state)
     {
         _uiGO.SetActive(false);
 

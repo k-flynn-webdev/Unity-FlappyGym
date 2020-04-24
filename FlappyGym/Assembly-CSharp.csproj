@@ -70,6 +70,7 @@
     <Compile Include="Assets\Code\defs\ObjectPoolInfo.cs" />
     <Compile Include="Assets\Code\GameLoader.cs" />
     <Compile Include="Assets\Code\GameState.cs" />
+    <Compile Include="Assets\Code\GameStateUI.cs" />
     <Compile Include="Assets\Code\interfaces\IPublish.cs" />
     <Compile Include="Assets\Code\interfaces\ISubscribe.cs" />
     <Compile Include="Assets\Code\Item.cs" />

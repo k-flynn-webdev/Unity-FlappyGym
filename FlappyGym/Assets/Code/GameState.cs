@@ -50,7 +50,14 @@ public class GameState : MonoBehaviour, IPublish
 
     private void Start()
     {
-        SetState(GameStateObj.gameStates.Load);
+        StartCoroutine(DelayLoad());
+    }
+
+
+    IEnumerator DelayLoad()
+    {
+        yield return new WaitForSeconds(1f);
+        SetStateLoad();
     }
 
     public void ChangeState(GameStateObj.gameStates state)
@@ -91,12 +98,11 @@ public class GameState : MonoBehaviour, IPublish
         this.Notify();
     }
 
-
+    public void SetStateLoad() => ChangeState(GameStateObj.gameStates.Load);
     public void SetStateMain() => ChangeState(GameStateObj.gameStates.Main);
     public void SetStatePlay() => ChangeState(GameStateObj.gameStates.Play);
     public void SetStatePause() => ChangeState(GameStateObj.gameStates.Pause);
     public void SetStateOver() => ChangeState(GameStateObj.gameStates.Over);
-
 
     public List<ISubscribe> Subscribers
     { get { return this.subscribers; } }

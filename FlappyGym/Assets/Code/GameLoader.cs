@@ -24,7 +24,7 @@ public class GameLoader : MonoBehaviour, ISubscribe
         Debug.Log("Loading game");
         yield return new WaitForSeconds(_waitTime);
         Debug.Log("Starting game");
-        ServiceLocator.Resolve<GameState>().SetState(GameStateObj.gameStates.Main);
+        ServiceLocator.Resolve<GameState>().SetStateMain();
     }
 
     public void React(GameStateObj state)

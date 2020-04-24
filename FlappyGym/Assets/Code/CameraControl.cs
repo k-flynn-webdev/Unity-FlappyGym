@@ -26,6 +26,8 @@ public class CameraControl : MonoBehaviour
     private Vector3 _followOffsetLocal = new Vector3();
     private Vector3 _followSmoothingLocal = new Vector3();
 
+    [SerializeField]
+    private float _minAmount = 0.05f;
 
     void Awake()
     {
@@ -88,6 +90,14 @@ public class CameraControl : MonoBehaviour
 
     void Update()
     {
-        this.transform.position = new Vector3(GetAxesPos(0), GetAxesPos(1), GetAxesPos(2));
+        Vector3 newPos = new Vector3(GetAxesPos(0), GetAxesPos(1), GetAxesPos(2));
+        float distance = Vector3.Distance(this.transform.position, newPos);
+
+        if (distance < _minAmount)
+        {
+            return;
+        }
+
+        this.transform.position = newPos;
     }
 }

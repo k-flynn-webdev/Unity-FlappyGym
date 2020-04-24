@@ -11,11 +11,11 @@ public class ScoreManager : MonoBehaviour, ISubscribe
     { get { return this._score; } }
 
     [SerializeField]
-    public bool Display
-    { get { return this._display; } }
+    public bool DisplayLarge
+    { get { return this._displayLarge; } }
 
     private float _score = 0f;
-    private bool _display = false;
+    private bool _displayLarge = false;
 
     [SerializeField]
     private GameObject _ScoreUI;
@@ -24,19 +24,8 @@ public class ScoreManager : MonoBehaviour, ISubscribe
 
     public void SetScore(float newScore)
     {
-        if (!_display)
-        {
-            _display = true;
-        }
-
         _score = newScore;
         _ScoreText.text = _score.ToString();
-    }
-
-    public void HideScore()
-    {
-        _score = 0f;
-        _display = false;
     }
 
     void Awake()
@@ -51,7 +40,14 @@ public class ScoreManager : MonoBehaviour, ISubscribe
 
     public void React(GameStateObj state)
     {
-        _gameInPlay = state.state == GameStateObj.gameStates.Play;
-    }
+        _displayLarge = state.state == GameStateObj.gameStates.Over;
 
+        _ScoreUI.transform.localScale = Vector3.one;
+
+        if (_displayLarge)
+        {
+            _ScoreUI.transform.localScale = Vector3.one * 2f;
+        }
+
+    }
 }
