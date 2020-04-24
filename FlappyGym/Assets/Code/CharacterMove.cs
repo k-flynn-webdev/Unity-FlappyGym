@@ -30,7 +30,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     private float _jumpTimer = 0f;
 
     private Vector3 _hitVel = new Vector3();
-    //private Vector3 _jumpTarget = new Vector3();
     private Vector3 _inertiaVel = new Vector3();
     private Vector3 _speedVel = new Vector3();
 
@@ -44,7 +43,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     {
         _jumpTimer = 0f;
         _hitVel = new Vector3();
-        //_jumpTarget = new Vector3();
         _inertiaVel = new Vector3();
         _speedVel = new Vector3();
     }
@@ -113,11 +111,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
     void OnTriggerEnter(Collider hitBy) { this.TriggerCol(hitBy); }
 
-    void OnTriggerStay(Collider hitBy) { this.TriggerCol(hitBy); }
-
-    void OnTriggerExit(Collider hitBy) { this.TriggerCol(hitBy); }
-
-
     void TriggerCol(Collider hitBy)
     {
         var force = 2f;
@@ -135,9 +128,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _isJumping = true;
         _inertiaVel = Vector3.zero;
         _jumpTimer = _jumpDelay;
-        //_jumpTarget = Vector3.zero;
-        _hitVel = Vector3.zero;
-        _hitVel += (this.transform.position - hitBy.transform.position) * force;
+        _hitVel = (this.transform.position - hitBy.transform.position) * force;
     }
 
 
@@ -151,7 +142,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _isJumping = true;
         _inertiaVel = _jump * _weight;
         _jumpTimer = _jumpDelay;
-        //_jumpTarget = _localPos + _jump + _speedVel;
     }
 
     void updateHit()

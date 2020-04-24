@@ -74,13 +74,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: {x: 8, y: 0, z: 0}
-  _speedMax: 4
+  _speedMax: 5
   _slowWhenJumping: 0
   _jump: {x: 0, y: 4, z: 0}
   _jumpDelay: 0.33
   _gravity: {x: 0, y: -50, z: 0}
   _weight: 3
-  _ground: 0
+  _ground: -5
 --- !u!54 &2999499061133951591
 Rigidbody:
   m_ObjectHideFlags: 0

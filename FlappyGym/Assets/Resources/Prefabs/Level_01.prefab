@@ -44,3 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 0
+  _isPlaying: 0
+  _player: {fileID: 0}
+  _walls: []
+  _wallItems: []
+  _startPos: {x: -60, y: 5, z: 0}

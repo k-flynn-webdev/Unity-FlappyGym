@@ -16,12 +16,10 @@ public class Level_01 : Level
 
     [SerializeField]
     private Vector3 _startPos;
+    private float _levelSize = 40f;
 
 
-    [SerializeField]
     private float _xProgress = 0f;
-
-    private float _levelSize = 50f;
     private float _xlevelMin = 0f;
     private float _xlevelMax = 0f;
 
