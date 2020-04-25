@@ -84,6 +84,7 @@
     <Compile Include="Assets\Code\ScoreItem.cs" />
     <Compile Include="Assets\Code\ScoreManager.cs" />
     <Compile Include="Assets\Code\ServiceLocator.cs" />
+    <Compile Include="Assets\Code\UI_FPS.cs" />
     <Compile Include="Assets\Code\UIState.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>/Users/kevinflynn/studio/games/FlappyGym/FlappyGym/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
