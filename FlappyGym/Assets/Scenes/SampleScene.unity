@@ -856,7 +856,7 @@ MonoBehaviour:
   _followOffset: {x: 15, y: 0, z: -10}
   _followSmoothing: {x: 1.1, y: 0.2, z: 1}
   _targetLocal: {fileID: 0}
-  _minAmount: 0.05
+  _minAmount: 0.015
 --- !u!1 &551515639
 GameObject:
   m_ObjectHideFlags: 0
