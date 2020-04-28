@@ -73,10 +73,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1921ab24e281545c18fdcdb70fde5471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: {x: 3, y: 0, z: 0}
-  _jump: {x: 0, y: 20, z: 0}
+  _speed: {x: 10, y: 0, z: 0}
+  _jump: {x: 0, y: 27, z: 0}
   _fall: {x: 0, y: -40, z: 0}
-  _speedDuration: 2
+  _speedDuration: 5
   _speedVel:
     serializedVersion: 2
     m_Curve:
@@ -101,7 +101,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _jumpDuration: 0.33
+  _jumpDuration: 0.25
   _jumpVel:
     serializedVersion: 2
     m_Curve:
@@ -153,7 +153,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _fallDuration: 1
+  _fallDuration: 0.75
   _fallVel:
     serializedVersion: 2
     m_Curve:
@@ -179,8 +179,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _slowWhenJumping: 0
-  _jumpInterrupt: 0.266
-  _ground: -5
+  _jumpInterrupt: 0.2
+  _ground: -16
 --- !u!54 &2999499061133951591
 Rigidbody:
   m_ObjectHideFlags: 0

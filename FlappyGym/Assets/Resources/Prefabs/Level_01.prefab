@@ -48,4 +48,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   _walls: []
   _wallItems: []
-  _startPos: {x: -60, y: 5, z: 0}
+  _floorSize: 5
+  _startPos: {x: -10, y: 5, z: 0}
+  _levelSize: 40
+  _levelOffset: 15
