@@ -59,8 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d357ee506789c4d12a4761085f63e7f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _top: -20
-  _bottom: -30
+  _top: -25
+  _bottom: -35
   _random: 1
 --- !u!1 &4307938839939566061
 GameObject:
@@ -74,9 +74,10 @@ GameObject:
   - component: {fileID: 4307938839939566058}
   - component: {fileID: 4307938839939566059}
   - component: {fileID: 4307938839939566060}
+  - component: {fileID: 7664741045149196875}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Death
+  m_TagString: Bounce
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,6 +154,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7664741045149196875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4307938839939566061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc1eb3fe82e6f487980aff13538b2c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8883281106988613047
 GameObject:
   m_ObjectHideFlags: 0

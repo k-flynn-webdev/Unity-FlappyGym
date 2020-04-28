@@ -7,30 +7,19 @@ public class Player : MonoBehaviour, ISubscribe
 
     private float _deathWait = 0.4f;
 
+    void Awake()
+    {
+        ServiceLocator.Register<Player>(this);
+    }
+
     void Start()
     {
         ServiceLocator.Resolve<GameState>().Subscribe(this);
     }
 
-    void OnTriggerEnter(Collider hitBy) { this.TriggerCol(hitBy); }
-
-    void OnTriggerStay(Collider hitBy) { this.TriggerCol(hitBy); }
-
-    void OnTriggerExit(Collider hitBy) { this.TriggerCol(hitBy); }
-
-
-    void TriggerCol(Collider hitBy)
+    public void Kill()
     {
-
-        if (hitBy.CompareTag("Bounce"))
-        {
-
-        }
-
-        if (hitBy.tag == "Death")
-        {
-            StartCoroutine(OnDeath());
-        }
+        StartCoroutine(OnDeath());
     }
 
     private IEnumerator OnDeath()
