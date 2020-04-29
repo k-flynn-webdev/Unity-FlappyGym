@@ -15,7 +15,9 @@ public class ObjectPoolAssetsEditor : Editor
         if (GUILayout.Button("AddAll"))
         {
             AddAllAssets();
+            serializedObject.ApplyModifiedProperties();
         }
+
     }
 
     // for use by editor only!
@@ -34,6 +36,6 @@ public class ObjectPoolAssetsEditor : Editor
 
         ObjectPoolAssets myScript = (ObjectPoolAssets)target;
         myScript.SetAllAssets(tmpItems);
-        EditorUtility.SetDirty(this);
+        EditorUtility.SetDirty(myScript);
     }
 }

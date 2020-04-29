@@ -869,7 +869,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.37254903, g: 0.3882353, b: 0.38431373, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -908,14 +908,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.12854315, y: -0.17216265, z: 0.022665637, w: 0.97638255}
+  m_LocalRotation: {x: 0.13002947, y: -0.08641016, z: 0.011376109, w: 0.98767215}
   m_LocalPosition: {x: 5, y: 1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 335696246}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 15, y: -20, z: 0}
+  m_LocalEulerAnglesHint: {x: 15, y: -10, z: 0}
 --- !u!114 &534669906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,8 +931,8 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _targetDefault: {fileID: 1298802679}
   _followAxes: {x: 1.1, y: 1.1, z: 0}
-  _followOffset: {x: 20, y: 0, z: -10}
-  _followSmoothing: {x: 1.1, y: 0.2, z: 1}
+  _followOffset: {x: 20, y: 16, z: -10}
+  _followSmoothing: {x: 1.5, y: 0.35, z: 1}
   _targetLocal: {fileID: 0}
   _minAmount: 0.015
 --- !u!114 &534669907
@@ -1983,13 +1983,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298802678}
-  m_LocalRotation: {x: 0.12854315, y: -0.17216265, z: 0.022665637, w: 0.97638255}
+  m_LocalRotation: {x: 0.13002947, y: -0.08641016, z: 0.011376109, w: 0.98767215}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 15, y: -20, z: 0}
+  m_LocalEulerAnglesHint: {x: 15, y: -10, z: 0}
 --- !u!1 &1356754077
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,14 +8,8 @@ public class Level_01 : Level
     [SerializeField]
     private ObjectPoolItem _player;
 
-    [SerializeField]
-    private List<ObjectPoolItem> _walls = new List<ObjectPoolItem>();
-    [SerializeField]
-    private List<Item> _wallItems = new List<Item>();
-
-    public float _floorSize = 10f;
-    private List<ObjectPoolItem> _floors = new List<ObjectPoolItem>();
-    private List<Item> _floorItems = new List<Item>();
+    public float _houseSize = 10f;
+    private List<ObjectPoolItem> _houses = new List<ObjectPoolItem>();
 
 
     [SerializeField]
@@ -30,17 +24,18 @@ public class Level_01 : Level
     private float _xlevelMin = 0f;
     private float _xlevelMax = 0f;
 
+    private float _lastUpdate = 0f;
+
     private void Update()
     {
         if (_isPlaying)
         {
             _xProgress = _player.transform.position.x + _levelOffset;
             
-            if (_xProgress + _levelSize > _xlevelMax)
+            if (_xProgress > _lastUpdate)
             {
                 UpdateMinMaxLevel();
-                UpdateFloors();
-                //UpdateWalls();
+                UpdateHouses();
             }
         }
     }
@@ -48,37 +43,76 @@ public class Level_01 : Level
     public override void Setup()
     {
         _xProgress = 0f;
+        CreateHouses();
         _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player");
 
-        CreateFloors();
-
-
-
-        //for (int i = 0; i < 8; i++)
-        //{
-        //    _walls.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Wall_t_01"));
-        //    _walls.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Wall_b_01"));
-        //}
-
-        //for (int i = 0; i < _walls.Count; i++)
-        //{
-        //    _wallItems.Add(_walls[i].GetComponent<Item>());
-        //}
-
-
-
         base.Setup();
+    }
+
+    private void CreateHouses()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            string item = "";
+            float rand = Random.value;
+            if (rand < 0.33)
+            {
+                item = "House_01";
+            }
+            if (rand >= 0.33 && rand < 0.66)
+            {
+                item = "House_02";
+            }
+            if (rand >= 0.66)
+            {
+                item = "House_03";
+            }
+
+            _houses.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem(item));
+        }
+    }
+
+    private void SetupHouses()
+    {
+        float _currentPos = _xlevelMin;
+
+        for (int i = 0; i < _houses.Count; i++)
+        {
+            if (_houses[i].Item != null)
+            {
+                _houses[i].Item.Place(_currentPos);
+                _currentPos += _houseSize;
+            }
+        }
+    }
+
+    private void UpdateLastUpdate()
+    {
+        _lastUpdate = _xProgress + 1f;
+    }
+
+    private void UpdateMinMaxLevel()
+    {
+        _xlevelMin = _xProgress - _levelSize + _levelOffset;
+        _xlevelMax = _xProgress + _levelSize + _levelOffset;
     }
 
     public override void Reset()
     {
         _xProgress = 0f;
-        UpdateMinMaxLevel();
-        SetupFloors();
-        SetupWalls();
+        _lastUpdate = 1f;
         ResetPlayer();
+        UpdateMinMaxLevel();
+        SetupHouses();
         ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
         base.Reset();
+    }
+
+    private void ResetPlayer()
+    {
+        _player.transform.position = _startPos;
+        _player.transform.localEulerAngles = Vector3.zero;
+        _player.GetComponent<CharacterMove>().Reset();
     }
 
 
@@ -93,101 +127,39 @@ public class Level_01 : Level
         base.Play();
     }
 
-    private void ResetPlayer()
-    {
-        _player.transform.position = _startPos;
-        _player.transform.localEulerAngles = Vector3.zero;
-        _player.GetComponent<CharacterMove>().Reset();
-    }
 
-
-    private void UpdateMinMaxLevel()
-    {
-        _xlevelMin = _xProgress - _levelSize;
-        _xlevelMax = _xProgress + _levelSize;
-    }
-
-
-    private void CreateFloors()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            _floors.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Floor"));
-        }
-
-        for (int i = 0; i < _floors.Count; i++)
-        {
-            _floorItems.Add(_floors[i].GetComponent<Item>());
-        }
-    }
-
-
-    private void SetupFloors()
-    {
-        float _currentPos = _xlevelMin;
-
-        for (int i = 0; i < _floorItems.Count; i++)
-        {
-            _floorItems[i].Place(_currentPos);
-            _currentPos += _floorSize;
-        }
-    }
-
-    private void UpdateFloors()
+    private void UpdateHouses()
     {
         float xEnd = 0f;
-        int floorIdx = -1;
+        int houseIdx = -1;
 
-        for (int i = 0; i < _floorItems.Count; i++)
+        for (int i = 0; i < _houses.Count; i++)
         {
-            if (_floorItems[i].transform.position.x > xEnd)
+            if (_houses[i].transform.position.x > xEnd)
             {
-                xEnd = _floorItems[i].transform.position.x;
+                xEnd = _houses[i].transform.position.x;
             }
 
-            if (_floorItems[i].transform.position.x < _xlevelMin)
+            if (_houses[i].transform.position.x < _xlevelMin)
             {
-                floorIdx = i;
+                houseIdx = i;
             }
         }
 
-        xEnd += _floorSize;
+        xEnd += _houseSize;
 
-        if (floorIdx == -1)
+        if (houseIdx == -1)
         {
             return;
         }
 
-        _floorItems[floorIdx].Place(xEnd);
+        UpdateLastUpdate();
+        if (_houses[houseIdx].Item != null)
+        {
+            _houses[houseIdx].Item.Place(xEnd);
+        }
     }
 
-
-
-    private void SetupWalls()
-    {
-        //_xlevelMin = _xProgress - _levelSize;
-        //_xlevelMax = _xProgress + _levelSize;
-
-        //for (int i = 0; i < _wallItems.Count; i++)
-        //{
-        //    _wallItems[i].Place(Mathf.Lerp(_xlevelMin, _xlevelMax, (1f/ _wallItems.Count) * i ));
-        //}
-    }
-
-    private void UpdateWalls()
-    {
-        //_xlevelMin = _xProgress - _levelSize;
-        //_xlevelMax = _xProgress + _levelSize;
-
-        //for (int i = 0; i < _wallItems.Count; i++)
-        //{
-        //    if (_wallItems[i].transform.position.x < _xlevelMin)
-        //    {
-        //        _wallItems[i].Place(_xlevelMax);
-        //        return;
-        //    }
-        //}
-    }
 
     public override void UnLoad()
     {
@@ -198,6 +170,11 @@ public class Level_01 : Level
 
         ServiceLocator.Resolve<CameraControl>().SetTarget();
         _player.IsNotActive();
+
+        for (int i = 0; i < _houses.Count; i++)
+        {
+            _houses[i].IsNotActive();
+        }
 
         base.UnLoad();
     }

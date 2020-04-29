@@ -11,6 +11,13 @@ public class ObjectPoolItem : MonoBehaviour
     [SerializeField]
     private bool _isActive = false;
 
+    public Item Item;
+
+    private void Awake()
+    {
+        Item = GetComponent<Item>();
+    }
+
     public void IsActive()
     {
         _isActive = true;

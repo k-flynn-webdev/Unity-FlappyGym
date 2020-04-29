@@ -1,14 +1,64 @@
 fileFormatVersion: 2
-guid: 74125cdd56ff4491c9e58dc89cc9bc6a
+guid: f49a03934aef04fe891ebf52199ede13
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
+    100002: pCube1
+    100004: pCube10
+    100006: pCube11
+    100008: pCube12
+    100010: pCube13
+    100012: pCube2
+    100014: pCube6
+    100016: pCube7
+    100018: pCube8
+    100020: pCube9
     400000: //RootNode
+    400002: pCube1
+    400004: pCube10
+    400006: pCube11
+    400008: pCube12
+    400010: pCube13
+    400012: pCube2
+    400014: pCube6
+    400016: pCube7
+    400018: pCube8
+    400020: pCube9
     2100000: lambert1
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: floor
+    2300000: pCube1
+    2300002: pCube10
+    2300004: pCube11
+    2300006: pCube12
+    2300008: pCube13
+    2300010: pCube2
+    2300012: pCube6
+    2300014: pCube7
+    2300016: pCube8
+    2300018: pCube9
+    2300020: //RootNode
+    3300000: pCube1
+    3300002: pCube10
+    3300004: pCube11
+    3300006: pCube12
+    3300008: pCube13
+    3300010: pCube2
+    3300012: pCube6
+    3300014: pCube7
+    3300016: pCube8
+    3300018: pCube9
+    3300020: //RootNode
+    4300000: pCube1
+    4300002: pCube2
+    4300004: pCube6
+    4300006: pCube7
+    4300008: pCube8
+    4300010: pCube9
+    4300012: pCube10
+    4300014: pCube11
+    4300016: pCube12
+    4300018: pCube13
+    4300020: crane
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -41,7 +91,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 0.5
-    meshCompression: 0
+    meshCompression: 3
     addColliders: 0
     useSRGBMaterialColor: 1
     importVisibility: 0
