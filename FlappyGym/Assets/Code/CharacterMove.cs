@@ -144,7 +144,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
         if (_isFall)
         {
-            this.transform.localRotation = Quaternion.Lerp(_rotJump, _rotFall, _fallTimer * 2f);
+            this.transform.localRotation = Quaternion.Lerp(_rotJump, _rotFall, (_fallTimer * 2f) - .15f);
             return;
         }
 
@@ -177,7 +177,14 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
     void updateSpeed()
     {
-        if (_isJump && _slowWhenJumping || _isHit)
+
+        if (_isHit)
+        {
+            _speedVar = Vector3.Lerp(_speedVar, Vector3.zero, Time.deltaTime * 10f);
+            return;
+        }
+
+        if (_isJump && _slowWhenJumping)
         {
             _speedVar = Vector3.Lerp(_speedVar, Vector3.zero, Time.deltaTime);
             return;
@@ -284,10 +291,14 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         }
 
         // work out moving same dir..
-        Vector3 thisDir =  this.transform.position - _lastPos;
-        Vector3 otherDir = point - this.transform.position;
+        Vector3 thisDir = this.transform.position - _lastPos;
+        Vector3 otherDir = this.transform.position - point;
 
         float dotPro = Vector3.Dot(thisDir, otherDir);
+
+        Debug.Log(thisDir);
+        Debug.Log(otherDir);
+        Debug.Log(dotPro);
 
         if (dotPro < 0.2f)
         {
@@ -301,7 +312,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _isFall = true;
         _isHit = true;
         _hitTimer = 1.5f;
-        _hitVar = (this.transform.position - point) * force;
+        _hitVar = otherDir * force;
     }
 
     void Jump()

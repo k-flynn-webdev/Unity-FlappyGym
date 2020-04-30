@@ -75,8 +75,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: {x: 16, y: 0, z: 0}
-  _jump: {x: 0, y: 60, z: 0}
-  _fall: {x: 0, y: -60, z: 0}
+  _jump: {x: 0, y: 45, z: 0}
+  _fall: {x: 0, y: -45, z: 0}
   _speedDuration: 3
   _speedVel:
     serializedVersion: 2
@@ -109,24 +109,15 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 15.147972
-      outSlope: 15.147972
+      inSlope: 5.2623672
+      outSlope: 5.2623672
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.03546812
+      outWeight: 0.056730613
     - serializedVersion: 3
-      time: 0.12530085
-      value: 0.9362876
-      inSlope: 2.7257524
-      outSlope: 2.7257524
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23138772
-    - serializedVersion: 3
-      time: 0.3040736
-      value: 1.0779448
+      time: 0.50777847
+      value: 1.2727314
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -134,7 +125,7 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.56419015
+      time: 0.71028066
       value: 0.508928
       inSlope: -4.018015
       outSlope: -4.018015
