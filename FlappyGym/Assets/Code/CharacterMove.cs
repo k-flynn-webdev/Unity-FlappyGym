@@ -296,10 +296,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
         float dotPro = Vector3.Dot(thisDir, otherDir);
 
-        Debug.Log(thisDir);
-        Debug.Log(otherDir);
-        Debug.Log(dotPro);
-
         if (dotPro < 0.2f)
         {
             _speedTimer = 0f;
