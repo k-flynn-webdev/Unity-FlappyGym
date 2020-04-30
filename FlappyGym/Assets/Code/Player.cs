@@ -7,9 +7,13 @@ public class Player : MonoBehaviour, ISubscribe
 
     private float _deathWait = 0.4f;
 
+    private CharacterMove _charcterMove;
+
+
     void Awake()
     {
         ServiceLocator.Register<Player>(this);
+        _charcterMove = GetComponent<CharacterMove>();
     }
 
     void Start()
@@ -17,14 +21,22 @@ public class Player : MonoBehaviour, ISubscribe
         ServiceLocator.Resolve<GameState>().Subscribe(this);
     }
 
-    public void Kill()
+    public void Kill(float time)
     {
-        StartCoroutine(OnDeath());
+        StartCoroutine(OnDeath(time));
     }
 
-    private IEnumerator OnDeath()
+    public void Force(float force, Vector3 point)
     {
-        yield return new WaitForSeconds(_deathWait);
+        if (_charcterMove != null)
+        {
+            _charcterMove.Force(force, point);
+        }
+    }
+
+    private IEnumerator OnDeath(float time)
+    {
+        yield return new WaitForSeconds(time);
 
         ServiceLocator.Resolve<GameState>().SetStateOver();
     }

@@ -48,5 +48,5 @@ MonoBehaviour:
   _player: {fileID: 0}
   _houseSize: 10
   _startPos: {x: -10, y: 5, z: 0}
-  _levelSize: 40
+  _levelSize: 50
   _levelOffset: 11

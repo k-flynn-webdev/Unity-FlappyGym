@@ -74,9 +74,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1921ab24e281545c18fdcdb70fde5471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: {x: 13, y: 0, z: 0}
-  _jump: {x: 0, y: 27, z: 0}
-  _fall: {x: 0, y: -40, z: 0}
+  _speed: {x: 16, y: 0, z: 0}
+  _jump: {x: 0, y: 40, z: 0}
+  _fall: {x: 0, y: -60, z: 0}
   _speedDuration: 3
   _speedVel:
     serializedVersion: 2

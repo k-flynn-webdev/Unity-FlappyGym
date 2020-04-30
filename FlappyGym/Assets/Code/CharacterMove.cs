@@ -44,7 +44,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     private Vector3 _fallVar = new Vector3();
     private Vector3 _hitVar = new Vector3();
     private Vector3 _inertiaVar = new Vector3();
-
+    private Vector3 _lastPos = new Vector3();
 
     private bool _isJump = false;
     private bool _isFall = false;
@@ -75,7 +75,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _speedTimer = 0f;
         _jumpTimer = 0f;
         _fallTimer = 0f;
-        _hitTimer = 5f;
+        _hitTimer = 0f;
         _groundTimer = 0f;
 
         _isJump = false;
@@ -117,6 +117,8 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
     void Move()
     {
+        _lastPos = _localPos;
+
         this.transform.position = _localPos +
             (_speedVar * Time.deltaTime) +
             (_inertiaVar * Time.deltaTime) +
@@ -150,7 +152,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
     void updateSpeed()
     {
-        if (_isJump && _slowWhenJumping)
+        if (_isJump && _slowWhenJumping || _isHit)
         {
             _speedVar = Vector3.Lerp(_speedVar, Vector3.zero, Time.deltaTime);
             return;
@@ -234,35 +236,47 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         {
             _target = _jumpVar;
         }
+        if (_isHit)
+        {
+            _target = Vector3.zero;
+        }
 
         _inertiaVar = Vector3.Lerp(_inertiaVar, _target, Time.deltaTime * 15f);
     }
-
-
 
     void OnTriggerEnter(Collider hitBy) { this.TriggerCol(hitBy); }
 
     void TriggerCol(Collider hitBy)
     {
-        bool isBounce = false;
-        float force = 2f;
+    }
 
-        if (hitBy.CompareTag("Bounce"))
-        {
-            force = 5f;
-            isBounce = true;
-        }
+    public void Force(float force, Vector3 point)
+    {
 
-        if (!isBounce)
+        if (_hitTimer > 0.75f)
         {
             return;
         }
 
+        // work out moving same dir..
+        Vector3 thisDir =  this.transform.position - _lastPos;
+        Vector3 otherDir = point - this.transform.position;
+
+        float dotPro = Vector3.Dot(thisDir, otherDir);
+
+        if (dotPro < 0.2f)
+        {
+            _speedTimer = 0f;
+            _speedVar = Vector3.zero;
+        }
+
+
         _isGround = false;
         _isJump = false;
         _isFall = true;
+        _isHit = true;
         _hitTimer = 1.5f;
-        _hitVar = (this.transform.position - hitBy.transform.position) * force;
+        _hitVar = (this.transform.position - point) * force;
     }
 
     void Jump()
@@ -275,25 +289,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _jumpTimer = 0f;
         _localPos += Vector3.up * 0.25f;
     }
-
-    //void updateHit()
-    //{
-    //    _hitVel = Vector3.Lerp(_hitVel, Vector3.zero, Time.deltaTime);
-    //}
-
-    //void updateJump()
-    //{
-    //    if (_jumpTimer > 0f)
-    //    {
-    //        _jumpTimer -= Time.deltaTime;
-    //    }
-
-    //    _canInteruptJump = _jumpTimer > 0f;
-
-    //    Vector3 newGoal = Vector3.Lerp(_gravity, _jump, _jumpVel.Evaluate(_jumpTimer));
-
-    //    _inertiaVel = Vector3.Lerp(_inertiaVel, newGoal, Time.deltaTime);
-    //}
 
     public void React(GameStateObj state) {
         _gameInPlay = state.state == GameStateObj.gameStates.Play;
