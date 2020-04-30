@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: {x: 16, y: 0, z: 0}
-  _jump: {x: 0, y: 40, z: 0}
+  _jump: {x: 0, y: 60, z: 0}
   _fall: {x: 0, y: -60, z: 0}
   _speedDuration: 3
   _speedVel:
@@ -182,6 +182,8 @@ MonoBehaviour:
   _slowWhenJumping: 0
   _jumpInterrupt: 0.2
   _ground: 3
+  _rotJump: {x: 0, y: 0, z: 0.2, w: 0.8}
+  _rotFall: {x: 0, y: 0, z: -0.2, w: 0.8}
 --- !u!54 &2999499061133951591
 Rigidbody:
   m_ObjectHideFlags: 0

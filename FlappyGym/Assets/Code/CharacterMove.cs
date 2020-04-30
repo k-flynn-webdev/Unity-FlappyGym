@@ -33,6 +33,11 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     [SerializeField]
     private float _ground = 0f;
 
+    private Quaternion _rotNormal = new Quaternion();
+    [SerializeField]
+    private Quaternion _rotJump = new Quaternion();
+    [SerializeField]
+    private Quaternion _rotFall = new Quaternion();
 
 
     private Vector3 _localPos;
@@ -63,6 +68,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
     void Start()
     {
         ServiceLocator.Resolve<GameState>().Subscribe(this);
+        _rotNormal = this.transform.localRotation;
     }
 
     public void Reset ()
@@ -107,6 +113,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         this.updateInertia();
 
         this.Move();
+        this.Rotate();
     }
 
 
@@ -125,6 +132,24 @@ public class CharacterMove : MonoBehaviour, ISubscribe
             (_hitVar * Time.deltaTime);
     }
 
+
+    void Rotate()
+    {
+
+        if (_isJump)
+        {
+            this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, _rotJump, Time.deltaTime * 10f);
+            return;
+        }
+
+        if (_isFall)
+        {
+            this.transform.localRotation = Quaternion.Lerp(_rotJump, _rotFall, _fallTimer * 2f);
+            return;
+        }
+
+        this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, _rotNormal, Time.deltaTime * 5f);
+    }
 
 
     void updateGround()
@@ -288,6 +313,9 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
         _jumpTimer = 0f;
         _localPos += Vector3.up * 0.25f;
+        Rotate();
+        Rotate();
+        Rotate();
     }
 
     public void React(GameStateObj state) {
