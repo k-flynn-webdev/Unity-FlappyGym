@@ -8,8 +8,16 @@ public class Level_01 : Level
     [SerializeField]
     private ObjectPoolItem _player;
 
-    public float _houseSize = 10f;
-    private List<ObjectPoolItem> _houses = new List<ObjectPoolItem>();
+    public float _floorSize = 10f;
+    private List<ObjectPoolItem> _floors = new List<ObjectPoolItem>();
+
+    [SerializeField]
+    private float _pipeStart = 20f;
+    [SerializeField]
+    private float _pipeMin = 5f;
+    [SerializeField]
+    private float _pipeMax = 15f;
+    private List<ObjectPoolItem> _pipes = new List<ObjectPoolItem>();
 
 
     [SerializeField]
@@ -35,7 +43,8 @@ public class Level_01 : Level
             if (_xProgress > _lastUpdate)
             {
                 UpdateMinMaxLevel();
-                UpdateHouses();
+                UpdateFloors();
+                //UpdatePipes();
             }
         }
     }
@@ -43,48 +52,58 @@ public class Level_01 : Level
     public override void Setup()
     {
         _xProgress = 0f;
-        CreateHouses();
+        CreateFloors();
+        //CreatePipes();
         _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player");
 
         base.Setup();
     }
 
-    private void CreateHouses()
+    private void CreateFloors()
+    {
+        for (int i = 0; i < 25; i++)
+        {
+            _floors.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Floor"));
+        }
+    }
+
+    private void CreatePipes()
     {
         for (int i = 0; i < 10; i++)
         {
-            string item = "";
-            float rand = Random.value;
-            if (rand < 0.33)
-            {
-                item = "House_01";
-            }
-            if (rand >= 0.33 && rand < 0.66)
-            {
-                item = "House_02";
-            }
-            if (rand >= 0.66)
-            {
-                item = "House_03";
-            }
-
-            _houses.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem(item));
+            _pipes.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Pipe"));
         }
     }
 
-    private void SetupHouses()
+
+    private void SetupFloors()
     {
         float _currentPos = _xlevelMin;
 
-        for (int i = 0; i < _houses.Count; i++)
+        for (int i = 0; i < _floors.Count; i++)
         {
-            if (_houses[i].Item != null)
+            if (_floors[i].Item != null)
             {
-                _houses[i].Item.Place(_currentPos);
-                _currentPos += _houseSize;
+                _floors[i].Item.Place(_currentPos);
+                _currentPos += _floorSize;
             }
         }
     }
+
+    private void SetupPipes()
+    {
+        float _currentPos = _pipeStart;
+
+        for (int i = 0; i < _pipes.Count; i++)
+        {
+            if (_pipes[i].Item != null)
+            {
+                _pipes[i].Item.Place(_currentPos);
+                _currentPos += Random.Range(_pipeMin, _pipeMax);
+            }
+        }
+    }
+
 
     private void UpdateLastUpdate()
     {
@@ -103,7 +122,8 @@ public class Level_01 : Level
         _lastUpdate = 1f;
         ResetPlayer();
         UpdateMinMaxLevel();
-        SetupHouses();
+        SetupFloors();
+        //SetupPipes();
         ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
         base.Reset();
     }
@@ -128,38 +148,68 @@ public class Level_01 : Level
     }
 
 
-    private void UpdateHouses()
+    private void UpdateFloors()
     {
         float xEnd = 0f;
-        int houseIdx = -1;
+        int floorIdx = -1;
 
-        for (int i = 0; i < _houses.Count; i++)
+        for (int i = 0; i < _floors.Count; i++)
         {
-            if (_houses[i].transform.position.x > xEnd)
+            if (_floors[i].transform.position.x > xEnd)
             {
-                xEnd = _houses[i].transform.position.x;
+                xEnd = _floors[i].transform.position.x;
             }
 
-            if (_houses[i].transform.position.x < _xlevelMin)
+            if (_floors[i].transform.position.x < _xlevelMin)
             {
-                houseIdx = i;
+                floorIdx = i;
             }
         }
 
-        xEnd += _houseSize;
+        xEnd += _floorSize;
 
-        if (houseIdx == -1)
+        if (floorIdx == -1)
         {
             return;
         }
 
         UpdateLastUpdate();
-        if (_houses[houseIdx].Item != null)
+        if (_floors[floorIdx].Item != null)
         {
-            _houses[houseIdx].Item.Place(xEnd);
+            _floors[floorIdx].Item.Place(xEnd);
         }
     }
 
+    private void UpdatePipes()
+    {
+        float xEnd = 0f;
+        int pipeIdx = -1;
+
+        for (int i = 0; i < _pipes.Count; i++)
+        {
+            if (_pipes[i].transform.position.x > xEnd)
+            {
+                xEnd = _pipes[i].transform.position.x;
+            }
+
+            if (_pipes[i].transform.position.x < _xlevelMin)
+            {
+                pipeIdx = i;
+            }
+        }
+
+        xEnd += Random.Range(_pipeMin, _pipeMax);
+
+        if (pipeIdx == -1)
+        {
+            return;
+        }
+
+        if (_floors[pipeIdx].Item != null)
+        {
+            _floors[pipeIdx].Item.Place(xEnd);
+        }
+    }
 
     public override void UnLoad()
     {
@@ -171,9 +221,14 @@ public class Level_01 : Level
         ServiceLocator.Resolve<CameraControl>().SetTarget();
         _player.IsNotActive();
 
-        for (int i = 0; i < _houses.Count; i++)
+        for (int i = 0; i < _floors.Count; i++)
         {
-            _houses[i].IsNotActive();
+            _floors[i].IsNotActive();
+        }
+
+        for (int i = 0; i < _pipes.Count; i++)
+        {
+            _pipes[i].IsNotActive();
         }
 
         base.UnLoad();

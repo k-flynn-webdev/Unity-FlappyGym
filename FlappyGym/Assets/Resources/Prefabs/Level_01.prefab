@@ -46,7 +46,10 @@ MonoBehaviour:
   Id: 0
   _isPlaying: 0
   _player: {fileID: 0}
-  _houseSize: 10
+  _floorSize: 5
+  _pipeStart: 20
+  _pipeMin: 15
+  _pipeMax: 36
   _startPos: {x: -10, y: 5, z: 0}
   _levelSize: 50
   _levelOffset: 11
