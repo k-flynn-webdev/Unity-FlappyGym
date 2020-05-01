@@ -31,7 +31,7 @@ public class ObjectPoolManagerEditor : Editor
 
         if (GUILayout.Button("Create"))
         {
-            myScript.GetItem("TestItem");
+            myScript.GetItem("TestItem", true);
         }
     }
 }

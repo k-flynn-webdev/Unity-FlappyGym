@@ -18,7 +18,7 @@ public class ObjectPoolItemEditor : Editor
             for (int i = 0; i < monoObjects.Length; i++)
             {
                 ObjectPoolItem myScript = (ObjectPoolItem)monoObjects[i];
-                myScript.IsNotActive();
+                myScript.SetItemNotActive();
             }
         }
     }

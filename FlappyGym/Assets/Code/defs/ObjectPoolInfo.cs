@@ -12,19 +12,22 @@ public class ObjectPoolInfo
         this.prefab = item;
     }
 
-    public ObjectPoolItem GetItem()
+    public ObjectPoolItem GetItem(bool activate)
     {
         for (int i = 0, max = items.Count; i < max; i++)
         {
             if (!items[i].Active)
             {
-                items[i].IsActive();
-                ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+                if (activate)
+                {
+                    items[i].SetItemActive();
+                    ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+                }
                 return items[i];
             }
         }
 
-        ObjectPoolItem tmpItem = this.prefab.CreateItem();
+        ObjectPoolItem tmpItem = this.prefab.CreateItem(activate);
         this.items.Add(tmpItem);
         ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
         return tmpItem;

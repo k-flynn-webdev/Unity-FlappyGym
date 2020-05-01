@@ -32,15 +32,15 @@ public class Level_01 : Level
     private float _xlevelMin = 0f;
     private float _xlevelMax = 0f;
 
-    private float _lastUpdate = 0f;
+    private float _nextUpdate = 0f;
 
     private void Update()
     {
         if (_isPlaying)
         {
-            _xProgress = _player.transform.position.x + _levelOffset;
+            _xProgress = _player.transform.position.x;
             
-            if (_xProgress > _lastUpdate)
+            if (_xProgress > _nextUpdate)
             {
                 UpdateMinMaxLevel();
                 UpdateFloors();
@@ -51,19 +51,20 @@ public class Level_01 : Level
 
     public override void Setup()
     {
-        _xProgress = 0f;
+        UpdateMinMaxLevel();
+        _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player", true);
+        ResetPlayer();
         CreateFloors();
         CreatePipes();
-        _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player");
 
         base.Setup();
     }
 
     private void CreateFloors()
     {
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 20; i++)
         {
-            _floors.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Floor"));
+            _floors.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Floor", true));
         }
     }
 
@@ -71,10 +72,14 @@ public class Level_01 : Level
     {
         for (int i = 0; i < 10; i++)
         {
-            _pipes.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Pipe"));
+            _pipes.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Pipe", true));
         }
     }
 
+    private bool CheckXLevelMax(float posX)
+    {
+        return posX < _xlevelMax;
+    }
 
     private void SetupFloors()
     {
@@ -84,9 +89,17 @@ public class Level_01 : Level
         {
             if (_floors[i].Item != null)
             {
-                _floors[i].Item.Place(_currentPos);
-                _currentPos += _floorSize;
-            }
+                if (CheckXLevelMax(_currentPos))
+                {
+                    _floors[i].Item.Place(_currentPos);
+                    _floors[i].SetItemActive();
+                } else
+                {
+                    _floors[i].SetItemNotActive();
+                }
+            }   
+
+            _currentPos += _floorSize;
         }
     }
 
@@ -98,28 +111,36 @@ public class Level_01 : Level
         {
             if (_pipes[i].Item != null)
             {
-                _pipes[i].Item.Place(_currentPos);
-                _currentPos += Random.Range(_pipeMin, _pipeMax);
+                if (CheckXLevelMax(_currentPos))
+                {
+                    _pipes[i].Item.Place(_currentPos);
+                    _pipes[i].SetItemActive();
+                }
+                else
+                {
+                    _pipes[i].SetItemNotActive();
+                }
             }
+
+            _currentPos += Random.Range(_pipeMin, _pipeMax);
         }
     }
 
 
     private void UpdateLastUpdate()
     {
-        _lastUpdate = _xProgress + 1f;
+        _nextUpdate = _xProgress + 1f;
     }
 
     private void UpdateMinMaxLevel()
     {
-        _xlevelMin = _xProgress - _levelSize + _levelOffset;
-        _xlevelMax = _xProgress + _levelSize + _levelOffset;
+        _xlevelMin = _levelOffset + _xProgress - (_levelSize / 2);
+        _xlevelMax = _levelOffset + _xProgress + (_levelSize / 2);
     }
 
     public override void Reset()
     {
-        _xProgress = 0f;
-        _lastUpdate = 1f;
+        _nextUpdate = 1f;
         ResetPlayer();
         UpdateMinMaxLevel();
         SetupFloors();
@@ -133,6 +154,7 @@ public class Level_01 : Level
         _player.transform.position = _startPos;
         _player.transform.localEulerAngles = Vector3.zero;
         _player.GetComponent<CharacterMove>().Reset();
+        _xProgress = _startPos.x;
     }
 
 
@@ -151,51 +173,65 @@ public class Level_01 : Level
     private void UpdateFloors()
     {
         float xEnd = 0f;
+        float xPos = 0f;
         int floorIdx = -1;
 
         for (int i = 0; i < _floors.Count; i++)
         {
-            if (_floors[i].transform.position.x > xEnd)
+            xPos = _floors[i].transform.position.x;
+
+            if (xPos > xEnd)
             {
-                xEnd = _floors[i].transform.position.x;
+                xEnd = xPos;
             }
 
-            if (_floors[i].transform.position.x < _xlevelMin)
+            if (xPos < _xlevelMin)
             {
                 floorIdx = i;
+                _floors[i].SetItemNotActive();
             }
         }
 
-        xEnd += _floorSize;
+        UpdateLastUpdate();
 
         if (floorIdx == -1)
         {
             return;
         }
 
-        UpdateLastUpdate();
+        xEnd += _floorSize;
+
+        if (!CheckXLevelMax(xEnd))
+        {
+            return;
+        }
+
         if (_floors[floorIdx].Item != null)
         {
             _floors[floorIdx].Item.Place(xEnd);
+            _floors[floorIdx].SetItemActive();
         }
     }
 
     private void UpdatePipes()
     {
         float xEnd = 0f;
+        float xPos = 0f;
         int pipeIdx = -1;
 
         for (int i = 0; i < _pipes.Count; i++)
         {
+            xPos = _pipes[i].transform.position.x;
 
-            if (_pipes[i].transform.position.x > xEnd)
+            if (xPos > xEnd)
             {
-                xEnd = _pipes[i].transform.position.x;
+                xEnd = xPos;
             }
 
-            if (_pipes[i].transform.position.x < _xlevelMin)
+            if (xPos < _xlevelMin)
             {
                 pipeIdx = i;
+                _pipes[i].SetItemNotActive();
             }
         }
 
@@ -204,9 +240,17 @@ public class Level_01 : Level
             return;
         }
 
+        xEnd += Random.Range(_pipeMin, _pipeMax);
+
+        if (!CheckXLevelMax(xEnd))
+        {
+            return;
+        }
+
         if (_pipes[pipeIdx].Item != null)
         {
-            _pipes[pipeIdx].Item.Place(xEnd + Random.Range(_pipeMin, _pipeMax));
+            _pipes[pipeIdx].Item.Place(xEnd);
+            _pipes[pipeIdx].SetItemActive();
         }
     }
 
@@ -218,16 +262,16 @@ public class Level_01 : Level
         }
 
         ServiceLocator.Resolve<CameraControl>().SetTarget();
-        _player.IsNotActive();
+        _player.SetItemNotActive();
 
         for (int i = 0; i < _floors.Count; i++)
         {
-            _floors[i].IsNotActive();
+            _floors[i].SetItemNotActive();
         }
 
         for (int i = 0; i < _pipes.Count; i++)
         {
-            _pipes[i].IsNotActive();
+            _pipes[i].SetItemNotActive();
         }
 
         base.UnLoad();

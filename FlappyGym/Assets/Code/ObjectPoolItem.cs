@@ -18,15 +18,17 @@ public class ObjectPoolItem : MonoBehaviour
     {
         Item = GetComponent<Item>();
         ItemResets = GetComponentsInChildren<IReset>();
+        _isActive = false;
+        this.gameObject.SetActive(false);
     }
 
-    public void IsActive()
+    public void SetItemActive()
     {
         _isActive = true;
         this.gameObject.SetActive(true);
     }
 
-    public void IsNotActive()
+    public void SetItemNotActive()
     {
         _isActive = false;
         this.gameObject.SetActive(false);
@@ -37,10 +39,13 @@ public class ObjectPoolItem : MonoBehaviour
         ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
     }
 
-    public ObjectPoolItem CreateItem()
+    public ObjectPoolItem CreateItem(bool activate)
     {
         ObjectPoolItem tmpObj = Instantiate(this, new Vector3(0, 0, 0), Quaternion.identity);
-        tmpObj.IsActive();
+        if (activate)
+        {
+            tmpObj.SetItemActive();
+        }
         return tmpObj;
     }
 }

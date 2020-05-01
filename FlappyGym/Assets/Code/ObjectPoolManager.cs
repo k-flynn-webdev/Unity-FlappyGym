@@ -39,7 +39,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
 
-    public ObjectPoolItem GetItem(string item)
+    public ObjectPoolItem GetItem(string item, bool activate)
     {
         if (!ItemPrefabs.ContainsKey(item))
         {
@@ -48,7 +48,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
 
         Debug.Log("Getting " + item);
-        return ItemPrefabs[item].GetItem();
+        return ItemPrefabs[item].GetItem(activate);
     }
 
     public void CheckCount()
