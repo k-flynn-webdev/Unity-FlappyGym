@@ -12,10 +12,12 @@ public class ObjectPoolItem : MonoBehaviour
     private bool _isActive = false;
 
     public Item Item;
+    public IReset[] ItemResets;
 
     private void Awake()
     {
         Item = GetComponent<Item>();
+        ItemResets = GetComponentsInChildren<IReset>();
     }
 
     public void IsActive()
@@ -28,6 +30,10 @@ public class ObjectPoolItem : MonoBehaviour
     {
         _isActive = false;
         this.gameObject.SetActive(false);
+        for (int i = 0; i < ItemResets.Length; i++)
+        {
+            ItemResets[i].Reset();
+        }
         ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
     }
 

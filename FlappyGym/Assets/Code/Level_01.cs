@@ -44,7 +44,7 @@ public class Level_01 : Level
             {
                 UpdateMinMaxLevel();
                 UpdateFloors();
-                //UpdatePipes();
+                UpdatePipes();
             }
         }
     }
@@ -53,7 +53,7 @@ public class Level_01 : Level
     {
         _xProgress = 0f;
         CreateFloors();
-        //CreatePipes();
+        CreatePipes();
         _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player");
 
         base.Setup();
@@ -123,7 +123,7 @@ public class Level_01 : Level
         ResetPlayer();
         UpdateMinMaxLevel();
         SetupFloors();
-        //SetupPipes();
+        SetupPipes();
         ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
         base.Reset();
     }
@@ -187,6 +187,7 @@ public class Level_01 : Level
 
         for (int i = 0; i < _pipes.Count; i++)
         {
+
             if (_pipes[i].transform.position.x > xEnd)
             {
                 xEnd = _pipes[i].transform.position.x;
@@ -198,16 +199,14 @@ public class Level_01 : Level
             }
         }
 
-        xEnd += Random.Range(_pipeMin, _pipeMax);
-
         if (pipeIdx == -1)
         {
             return;
         }
 
-        if (_floors[pipeIdx].Item != null)
+        if (_pipes[pipeIdx].Item != null)
         {
-            _floors[pipeIdx].Item.Place(xEnd);
+            _pipes[pipeIdx].Item.Place(xEnd + Random.Range(_pipeMin, _pipeMax));
         }
     }
 

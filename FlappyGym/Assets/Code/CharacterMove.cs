@@ -270,7 +270,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         }
         if (_isHit)
         {
-            _target = Vector3.zero;
+            _target = _fallVar;
         }
 
         _inertiaVar = Vector3.Lerp(_inertiaVar, _target, Time.deltaTime * 15f);
@@ -309,6 +309,11 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _isHit = true;
         _hitTimer = 1.5f;
         _hitVar = otherDir * force;
+
+        _jumpTimer = 5f;
+        _jumpVar = Vector3.zero;
+        _fallTimer = 0f;
+        _fallVar = Vector3.zero;
     }
 
     void Jump()
