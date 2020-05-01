@@ -212,7 +212,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
         if (_isJump)
         {
-            _jumpVar = Vector3.Lerp(Vector3.down, _jump, _jumpVel.Evaluate(_jumpTimer/_jumpDuration));
+            _jumpVar = Vector3.Lerp(Vector3.zero, _jump, _jumpVel.Evaluate(_jumpTimer/_jumpDuration));
         }
 
         if (_jumpTimer < 5f)
@@ -266,7 +266,8 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         }
         if (_isJump)
         {
-            _target = _jumpVar;
+            _localPos += _jumpVar * Time.deltaTime * 20f;
+            return;
         }
         if (_isHit)
         {
@@ -311,8 +312,8 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _hitVar = otherDir * force;
 
         _jumpTimer = 5f;
-        _jumpVar = Vector3.zero;
         _fallTimer = 0f;
+        _jumpVar = Vector3.zero;
         _fallVar = Vector3.zero;
     }
 
@@ -323,11 +324,12 @@ public class CharacterMove : MonoBehaviour, ISubscribe
             return;
         }
 
+        _localPos += Vector3.up * 0.1f;
         _jumpTimer = 0f;
-        _localPos += Vector3.up * 0.25f;
-        Rotate();
-        Rotate();
-        Rotate();
+        _fallTimer = 0f;
+        _fallVar = Vector3.zero;
+        _jumpVar = Vector3.zero;
+        _inertiaVar = Vector3.zero;
     }
 
     public void React(GameStateObj state) {

@@ -178,7 +178,7 @@ public class Level_01 : Level
 
         for (int i = 0; i < _floors.Count; i++)
         {
-            xPos = _floors[i].transform.position.x;
+            xPos = _floors[i].Active ? _floors[i].transform.position.x : 0f;
 
             if (xPos > xEnd)
             {
@@ -221,7 +221,7 @@ public class Level_01 : Level
 
         for (int i = 0; i < _pipes.Count; i++)
         {
-            xPos = _pipes[i].transform.position.x;
+            xPos = _pipes[i].Active ? _pipes[i].transform.position.x : 0f;
 
             if (xPos > xEnd)
             {
