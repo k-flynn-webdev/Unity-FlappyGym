@@ -149,20 +149,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
         this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, goal, Time.deltaTime * 20f);
         return;
-
-        if (_isJump)
-        {
-            this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, _rotJump, Time.deltaTime * 10f);
-            return;
-        }
-
-        if (_isFall)
-        {
-            this.transform.localRotation = Quaternion.Lerp(_rotJump, _rotFall, (_fallTimer * 2f) - .15f);
-            return;
-        }
-
-        this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, _rotNormal, Time.deltaTime * 5f);
     }
 
 
