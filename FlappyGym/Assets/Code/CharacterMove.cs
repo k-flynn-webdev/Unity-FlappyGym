@@ -144,7 +144,6 @@ public class CharacterMove : MonoBehaviour, ISubscribe
             goal = Quaternion.Lerp(_rotNormal, _rotJump, rotDir * 5f);
         } else
         {
-            Debug.Log(rotDir);
             goal = Quaternion.Lerp(_rotNormal, _rotFall, (rotDir * -1f) * 5f);
         }
 
