@@ -75,8 +75,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: {x: 13, y: 0, z: 0}
-  _jump: {x: 0, y: 1.5, z: 0}
-  _fall: {x: 0, y: -35, z: 0}
+  _jump: {x: 0, y: 1, z: 0}
+  _fall: {x: 0, y: -66, z: 0}
   _speedDuration: 1.5
   _speedVel:
     serializedVersion: 2
@@ -102,45 +102,36 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _jumpDuration: 0.33
+  _jumpDuration: 0.3
   _jumpVel:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 11.050303
-      outSlope: 11.050303
-      tangentMode: 0
+      value: -0.16640934
+      inSlope: 2.6318164
+      outSlope: 3.5037827
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.027197363
+      outWeight: 0.16169685
     - serializedVersion: 3
-      time: 0.042994786
-      value: 0.8306061
-      inSlope: 0.90224844
-      outSlope: 2.0606153
-      tangentMode: 1
+      time: 0.33458424
+      value: 1.0059011
+      inSlope: 3.5037827
+      outSlope: -1.5116881
+      tangentMode: 69
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.13820007
-    - serializedVersion: 3
-      time: 0.3782744
-      value: 0.9964411
-      inSlope: 0
-      outSlope: -3.235972
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.051526994
+      inWeight: 0.102843344
+      outWeight: 0.084257856
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
+      inSlope: -1.5116881
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 69
       weightedMode: 0
-      inWeight: 0.20014794
+      inWeight: 0.098814666
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -151,27 +142,27 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 0.11063961
-      outSlope: 0.11063961
+      value: 0.1
+      inSlope: 0.28065312
+      outSlope: 0.28065312
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.115226336
+      outWeight: 0.08726002
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 1.6809922
+      outSlope: 1.6809922
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.055846512
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _slowWhenJumping: 0
-  _jumpInterrupt: 0.25
+  _slowWhenJumping: 1
+  _jumpInterrupt: 0.3
   _ground: 3
   _rotJump: {x: 0, y: 0, z: 0.2, w: 0.8}
   _rotFall: {x: 0, y: 0, z: -0.2, w: 0.8}

@@ -112,8 +112,8 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         this.updateHit();
         this.updateInertia();
 
-        this.Move();
         this.Rotate();
+        this.Move();
     }
 
 
@@ -135,6 +135,21 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
     void Rotate()
     {
+
+        float rotDir = _localPos.y - _lastPos.y;
+        Quaternion goal = new Quaternion();
+
+        if (rotDir > 0f)
+        {
+            goal = Quaternion.Lerp(_rotNormal, _rotJump, rotDir * 5f);
+        } else
+        {
+            Debug.Log(rotDir);
+            goal = Quaternion.Lerp(_rotNormal, _rotFall, (rotDir * -1f) * 5f);
+        }
+
+        this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, goal, Time.deltaTime * 20f);
+        return;
 
         if (_isJump)
         {
@@ -266,7 +281,8 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         }
         if (_isJump)
         {
-            _localPos += _jumpVar * Time.deltaTime * 20f;
+            float curveY = _jumpVel.Evaluate(_jumpTimer / _jumpDuration);
+            _localPos += (_jumpVar * curveY);
             return;
         }
         if (_isHit)
@@ -317,12 +333,18 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _fallVar = Vector3.zero;
     }
 
+    //private float _jumpGoal = 0f;
+    //private float _jumpStart = 0f;
+
     void Jump()
     {
         if (_jumpTimer < _jumpInterrupt)
         {
             return;
         }
+
+        //_jumpStart = _localPos.y;
+        //_jumpGoal = _localPos.y + _jump.x;
 
         _localPos += Vector3.up * 0.1f;
         _jumpTimer = 0f;
