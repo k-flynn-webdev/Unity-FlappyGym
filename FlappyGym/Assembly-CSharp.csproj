@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Code\AnimSpin.cs" />
     <Compile Include="Assets\Code\CameraControl.cs" />
     <Compile Include="Assets\Code\CharacterMove.cs" />
     <Compile Include="Assets\Code\defs\GameStateObj.cs" />

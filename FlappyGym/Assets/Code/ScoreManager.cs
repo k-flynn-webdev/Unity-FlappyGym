@@ -28,6 +28,8 @@ public class ScoreManager : MonoBehaviour, ISubscribeState
     {
         _score = newScore;
         _ScoreText.text = _score.ToString();
+
+        ServiceLocator.Resolve<GameEvent>().SetEvent("Score");
     }
 
     public void AddScore(float addScore)
