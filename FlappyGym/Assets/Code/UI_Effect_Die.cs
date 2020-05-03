@@ -40,15 +40,16 @@ public class UI_Effect_Die : MonoBehaviour, ISubscribeEvent, ISubscribeState
             return;
         }
 
+        _whiteOutProgress += Time.deltaTime;
+
+        _tmpProgress = Color.Lerp(_noEffect, _whiteEffect, _whiteAnim.Evaluate(_whiteOutProgress));
+        _imageEffect.color = _tmpProgress;
+
         if (_whiteOutProgress > 5f)
         {
             TurnOff();
         }
 
-        _whiteOutProgress += Time.deltaTime;
-
-        _tmpProgress = Color.Lerp(_noEffect, _whiteEffect, _whiteAnim.Evaluate(_whiteOutProgress));
-        _imageEffect.color = _tmpProgress;
     }
 
     private void TurnOn()
@@ -62,6 +63,7 @@ public class UI_Effect_Die : MonoBehaviour, ISubscribeEvent, ISubscribeState
     {
         active = false;
         this.gameObject.SetActive(false);
+        _imageEffect.color = _noEffect;
         _whiteOutProgress = 0f;
     }
 
