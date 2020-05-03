@@ -162,7 +162,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _slowWhenJumping: 1
-  _jumpInterrupt: 0.3
+  _jumpInterrupt: 0.2
   _ground: 3
   _rotJump: {x: 0, y: 0, z: 0.2, w: 0.8}
   _rotFall: {x: 0, y: 0, z: -0.2, w: 0.8}

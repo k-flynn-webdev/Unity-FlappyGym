@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameLoader : MonoBehaviour, ISubscribe
+public class GameLoader : MonoBehaviour, ISubscribeState
 {
 
     [SerializeField]
@@ -16,7 +16,7 @@ public class GameLoader : MonoBehaviour, ISubscribe
 
     void Start()
     {
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
+        ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
 
     IEnumerator BeginGame()
@@ -27,7 +27,7 @@ public class GameLoader : MonoBehaviour, ISubscribe
         ServiceLocator.Resolve<GameState>().SetStateMain();
     }
 
-    public void React(GameStateObj state)
+    public void ReactState(GameStateObj state)
     {
         switch (state.state)
         {

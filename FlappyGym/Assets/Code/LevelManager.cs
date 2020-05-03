@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour, ISubscribe
+public class LevelManager : MonoBehaviour, ISubscribeState
 {
 
     [SerializeField]
@@ -19,7 +19,7 @@ public class LevelManager : MonoBehaviour, ISubscribe
 
     void Start()
     {
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
+        ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
 
     void LoadALevel(int levelId = 0)
@@ -127,7 +127,7 @@ public class LevelManager : MonoBehaviour, ISubscribe
     }
 
 
-    public void React(GameStateObj state)
+    public void ReactState(GameStateObj state)
     {
         switch (state.state)
         {

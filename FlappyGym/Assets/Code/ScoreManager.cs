@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoreManager : MonoBehaviour, ISubscribe
+public class ScoreManager : MonoBehaviour, ISubscribeState
 {
 
     [SerializeField]
@@ -47,10 +47,10 @@ public class ScoreManager : MonoBehaviour, ISubscribe
 
     void Start()
     {
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
+        ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
 
-    public void React(GameStateObj state)
+    public void ReactState(GameStateObj state)
     {
         _state = state.state;
         _displayLarge = state.state == GameStateObj.gameStates.Over;

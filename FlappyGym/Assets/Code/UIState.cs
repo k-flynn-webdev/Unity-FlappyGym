@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIState : MonoBehaviour, ISubscribe
+public class UIState : MonoBehaviour, ISubscribeState
 {
 
     [SerializeField]
@@ -26,10 +26,10 @@ public class UIState : MonoBehaviour, ISubscribe
 
     void Start()
     {
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
+        ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
 
-    public void React(GameStateObj state)
+    public void ReactState(GameStateObj state)
     {
         _uiGO.SetActive(false);
 

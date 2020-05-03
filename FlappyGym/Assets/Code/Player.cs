@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, ISubscribe
+public class Player : MonoBehaviour, ISubscribeState
 {
-
-    private float _deathWait = 0.4f;
 
     private CharacterMove _charcterMove;
 
@@ -18,7 +16,7 @@ public class Player : MonoBehaviour, ISubscribe
 
     void Start()
     {
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
+        ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
 
     public void Kill(float time)
@@ -36,12 +34,14 @@ public class Player : MonoBehaviour, ISubscribe
 
     private IEnumerator OnDeath(float time)
     {
+        ServiceLocator.Resolve<GameEvent>().SetEvent("Died");
+
         yield return new WaitForSeconds(time);
 
         ServiceLocator.Resolve<GameState>().SetStateOver();
     }
 
-    public void React(GameStateObj state)
+    public void ReactState(GameStateObj state)
     {
         //_gameInPlay = state.state == GameStateObj.gameStates.Play;
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameState : MonoBehaviour, IPublish
+public class GameState : MonoBehaviour, IPublishState
 {
 
     [SerializeField]
@@ -66,7 +66,7 @@ public class GameState : MonoBehaviour, IPublish
         this._state = state;
         this._last = this._gameState.last;
 
-        this.Notify();
+        this.NotifyState();
     }
 
     public void SetStateLoad() => ChangeState(GameStateObj.gameStates.Load);
@@ -75,22 +75,22 @@ public class GameState : MonoBehaviour, IPublish
     public void SetStatePause() => ChangeState(GameStateObj.gameStates.Pause);
     public void SetStateOver() => ChangeState(GameStateObj.gameStates.Over);
 
-    public List<ISubscribe> Subscribers
-    { get { return this.subscribers; } }
+    public List<ISubscribeState> StateSubscribers
+    { get { return this.statesubscribers; } }
     
-    private List<ISubscribe> subscribers = new List<ISubscribe>();
+    private List<ISubscribeState> statesubscribers = new List<ISubscribeState>();
 
-    public void Notify()
+    public void NotifyState()
     {
-        for (int i = subscribers.Count - 1; i >= 0; i--)
+        for (int i = statesubscribers.Count - 1; i >= 0; i--)
         {
-            subscribers[i].React(this._gameState);
+            statesubscribers[i].ReactState(this._gameState);
         }
     }
 
-    public void Subscribe(ISubscribe listener)
-    { subscribers.Add(listener); }
+    public void SubscribeState(ISubscribeState listener)
+    { statesubscribers.Add(listener); }
 
-    public void UnSubscribe(ISubscribe listener)
-    { subscribers.Remove(listener); }
+    public void UnSubscribeState(ISubscribeState listener)
+    { statesubscribers.Remove(listener); }
 }

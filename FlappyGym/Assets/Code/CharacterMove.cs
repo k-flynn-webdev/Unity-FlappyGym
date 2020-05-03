@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CharacterMove : MonoBehaviour, ISubscribe
+public class CharacterMove : MonoBehaviour, ISubscribeState
 {
     [SerializeField]
     private Vector3 _speed = new Vector3();
@@ -67,7 +67,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
 
     void Start()
     {
-        ServiceLocator.Resolve<GameState>().Subscribe(this);
+        ServiceLocator.Resolve<GameState>().SubscribeState(this);
         _rotNormal = this.transform.localRotation;
     }
 
@@ -339,7 +339,7 @@ public class CharacterMove : MonoBehaviour, ISubscribe
         _inertiaVar = Vector3.zero;
     }
 
-    public void React(GameStateObj state) {
+    public void ReactState(GameStateObj state) {
         _gameInPlay = state.state == GameStateObj.gameStates.Play;
     }
 }

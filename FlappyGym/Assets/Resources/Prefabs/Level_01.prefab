@@ -47,9 +47,9 @@ MonoBehaviour:
   _isPlaying: 0
   _player: {fileID: 0}
   _floorSize: 5
-  _pipeStart: 25
+  _pipeStart: 35
   _pipeMin: 15
   _pipeMax: 30
-  _startPos: {x: 5, y: 5, z: 0}
+  _startPos: {x: 7, y: 5, z: 0}
   _levelSize: 61
   _levelOffset: 10

@@ -68,12 +68,15 @@
     <Compile Include="Assets\Code\defs\GameStateObj.cs" />
     <Compile Include="Assets\Code\defs\Level.cs" />
     <Compile Include="Assets\Code\defs\ObjectPoolInfo.cs" />
+    <Compile Include="Assets\Code\GameEvent.cs" />
     <Compile Include="Assets\Code\GameLoader.cs" />
     <Compile Include="Assets\Code\GameState.cs" />
     <Compile Include="Assets\Code\GameStateUI.cs" />
-    <Compile Include="Assets\Code\interfaces\IPublish.cs" />
+    <Compile Include="Assets\Code\interfaces\IPublishEvent.cs" />
+    <Compile Include="Assets\Code\interfaces\IPublishState.cs" />
     <Compile Include="Assets\Code\interfaces\IReset.cs" />
-    <Compile Include="Assets\Code\interfaces\ISubscribe.cs" />
+    <Compile Include="Assets\Code\interfaces\ISubscribeEvent.cs" />
+    <Compile Include="Assets\Code\interfaces\ISubscribeState.cs" />
     <Compile Include="Assets\Code\Item.cs" />
     <Compile Include="Assets\Code\Level_01.cs" />
     <Compile Include="Assets\Code\LevelManager.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Assets\Code\PlayerScore.cs" />
     <Compile Include="Assets\Code\ScoreManager.cs" />
     <Compile Include="Assets\Code\ServiceLocator.cs" />
+    <Compile Include="Assets\Code\UI_Effect_Die.cs" />
     <Compile Include="Assets\Code\UI_FPS.cs" />
     <Compile Include="Assets\Code\UIState.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
