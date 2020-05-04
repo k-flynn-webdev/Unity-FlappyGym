@@ -42,6 +42,7 @@ public class CharacterMove : MonoBehaviour, ISubscribeState
 
     private Vector3 _localPos;
     private bool _gameInPlay = false;
+    private bool _gameOver = false;
 
 
     private Vector3 _speedVar = new Vector3();
@@ -92,28 +93,26 @@ public class CharacterMove : MonoBehaviour, ISubscribeState
 
     void Update()
     {
-        if (!_gameInPlay)
+        if (_gameInPlay || _gameOver)
         {
-            return;
+            this.getLocalPos();
+
+            if (Input.GetButtonDown("Fire1") &&
+                !EventSystem.current.IsPointerOverGameObject() && _gameInPlay)
+            {
+                this.Jump();
+            }
+
+            this.updateGround();
+            this.updateSpeed();
+            this.updateJump();
+            this.updateFall();
+            this.updateHit();
+            this.updateInertia();
+
+            this.Rotate();
+            this.Move();
         }
-
-        this.getLocalPos();
-
-        if (Input.GetButtonDown("Fire1") &&
-            !EventSystem.current.IsPointerOverGameObject())
-        {
-            this.Jump();
-        }
-
-        this.updateGround();
-        this.updateSpeed();
-        this.updateJump();
-        this.updateFall();
-        this.updateHit();
-        this.updateInertia();
-
-        this.Rotate();
-        this.Move();
     }
 
 
@@ -177,6 +176,11 @@ public class CharacterMove : MonoBehaviour, ISubscribeState
 
     void updateSpeed()
     {
+        if (!_gameInPlay)
+        {
+            _speedVar = Vector3.Lerp(_speedVar, Vector3.zero, Time.deltaTime * 10f);
+            return;
+        }
 
         if (_isHit)
         {
@@ -341,5 +345,6 @@ public class CharacterMove : MonoBehaviour, ISubscribeState
 
     public void ReactState(GameStateObj state) {
         _gameInPlay = state.state == GameStateObj.gameStates.Play;
+        _gameOver = state.state == GameStateObj.gameStates.Over;
     }
 }
