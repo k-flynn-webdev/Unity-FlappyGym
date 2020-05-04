@@ -167,7 +167,7 @@ MonoBehaviour:
   _jumpInterrupt: 0.2
   _ground: 3
   _rotJump: {x: 0, y: 0, z: 0.2, w: 0.8}
-  _rotFall: {x: 0, y: 0, z: -0.2, w: 0.8}
+  _rotFall: {x: 0, y: 0, z: -0.3, w: 0.7}
 --- !u!54 &2999499061133951591
 Rigidbody:
   m_ObjectHideFlags: 0
