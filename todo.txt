@@ -1,22 +1,43 @@
+tasks: ✅ ❌
 
-start
-menu
-level load
-level editor/generator
+TODO:::
 
-character loader
-character movement
+:::
 
-character ai
-obstacle avoidance / routing
+	bg art
+	bg animated in game
 
-camera follow
+	title player screen, with player moving naturally ..
+	into play swap
+	level read/load from image strip
+		coins on floor
+	All UI to 10x standard
+		start screen
+		game over/score screen
+		in play screen
+		pause screen
+		leaderboard screen
+	add score effect	
 
-game states / 
-	paused
-	dead
-	restart
-	start
-	playing
 
-	
+
+
+
+✅	better jump
+✅	score reset
+✅	score ui
+✅	score system
+✅ 	level load early randomed
+✅ 	object loader
+✅	character loader
+✅	character movement
+✅	camera follow
+✅	game states / 
+✅		paused
+✅		dead
+✅		restart
+✅		start
+✅		playing
+✅ 	game states enum
+✅ 	start
+
