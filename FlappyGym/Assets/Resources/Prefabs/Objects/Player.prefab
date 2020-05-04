@@ -161,6 +161,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _rotateOnChange: 3
+  _rotateBias: 0.1
   _slowWhenJumping: 1
   _jumpInterrupt: 0.2
   _ground: 3

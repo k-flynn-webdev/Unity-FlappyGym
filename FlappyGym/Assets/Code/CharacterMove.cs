@@ -25,6 +25,11 @@ public class CharacterMove : MonoBehaviour, ISubscribeState
     [SerializeField]
     public AnimationCurve _fallVel;
 
+    [SerializeField]
+    private float _rotateOnChange = 5f;
+    [SerializeField]
+    private float _rotateBias = 0f;
+
 
     [SerializeField]
     private bool _slowWhenJumping = true;
@@ -138,12 +143,12 @@ public class CharacterMove : MonoBehaviour, ISubscribeState
         float rotDir = _localPos.y - _lastPos.y;
         Quaternion goal = new Quaternion();
 
-        if (rotDir > 0f)
+        if (rotDir > _rotateBias)
         {
-            goal = Quaternion.Lerp(_rotNormal, _rotJump, rotDir * 5f);
+            goal = Quaternion.Lerp(_rotNormal, _rotJump, rotDir * _rotateOnChange);
         } else
         {
-            goal = Quaternion.Lerp(_rotNormal, _rotFall, (rotDir * -1f) * 5f);
+            goal = Quaternion.Lerp(_rotNormal, _rotFall, (rotDir * -1f) * _rotateOnChange);
         }
 
         this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, goal, Time.deltaTime * 20f);
