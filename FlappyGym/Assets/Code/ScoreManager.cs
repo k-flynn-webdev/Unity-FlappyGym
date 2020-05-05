@@ -15,10 +15,14 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI[] _ScoreText;
+    [SerializeField]
+    Animator _scoreAnim;
 
     public void SetScore(float newScore)
     {
         _score = newScore;
+
+        _scoreAnim.SetTrigger("Score");
 
         for (int i = 0; i < _ScoreText.Length; i++)
         {
