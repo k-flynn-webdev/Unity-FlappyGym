@@ -22,7 +22,7 @@ TODO:::
 
 
 
-
+✅	UI icons simple
 ✅	better jump
 ✅	score reset
 ✅	score ui

@@ -14,11 +14,7 @@ public class ScoreManager : MonoBehaviour
     private float _score = 0f;
 
     [SerializeField]
-    private GameObject _ScoreUI;
-    [SerializeField]
     private TextMeshProUGUI[] _ScoreText;
-
-    private GameStateObj.gameStates _state;
 
     public void SetScore(float newScore)
     {
@@ -34,11 +30,6 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore(float addScore)
     {
-        if (_state != GameStateObj.gameStates.Play)
-        {
-            return;
-        }
-
         SetScore(Score + addScore);
     }
 
