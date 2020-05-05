@@ -17,7 +17,9 @@ public class PlayerScore : MonoBehaviour, IReset
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_active && other.CompareTag("Player"))
+        if (_active &&
+            !_hasFired &&
+            other.CompareTag("Player"))
         {
             ServiceLocator.Resolve<ScoreManager>().AddScore(_score);
             _hasFired = true;
