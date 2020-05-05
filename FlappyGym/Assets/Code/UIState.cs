@@ -6,7 +6,7 @@ public class UIState : MonoBehaviour, ISubscribeState
 {
 
     [SerializeField]
-    public GameObject _uiGO;
+    public GameObject[] _uiGO;
 
     [SerializeField]
     public bool _loading = false;
@@ -21,7 +21,7 @@ public class UIState : MonoBehaviour, ISubscribeState
 
     void Awake()
     {
-        _uiGO.SetActive(false);
+        TurnOff();
     }
 
     void Start()
@@ -29,33 +29,49 @@ public class UIState : MonoBehaviour, ISubscribeState
         ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
 
+    private void TurnOn()
+    {
+        for (int i = 0; i < _uiGO.Length; i++)
+        {
+            _uiGO[i].SetActive(true);
+        }
+    }
+
+    private void TurnOff()
+    {
+        for (int i = 0; i < _uiGO.Length; i++)
+        {
+            _uiGO[i].SetActive(false);
+        }
+    }
+
     public void ReactState(GameStateObj state)
     {
-        _uiGO.SetActive(false);
+        TurnOff();
 
         if (_loading && state.state == GameStateObj.gameStates.Load)
         {
-            _uiGO.SetActive(true);
+            TurnOn();
             return;
         }
         if (_main && state.state == GameStateObj.gameStates.Main)
         {
-            _uiGO.SetActive(true);
+            TurnOn();
             return;
         }
         if (_play && state.state == GameStateObj.gameStates.Play)
         {
-            _uiGO.SetActive(true);
+            TurnOn();
             return;
         }
         if (_pause && state.state == GameStateObj.gameStates.Pause)
         {
-            _uiGO.SetActive(true);
+            TurnOn();
             return;
         }
         if (_over && state.state == GameStateObj.gameStates.Over)
         {
-            _uiGO.SetActive(true);
+            TurnOn();
             return;
         }
     }

@@ -18,7 +18,7 @@ TODO:::
 		pause screen
 		leaderboard screen
 	add score effect	
-
+	improve floor art shadow bug
 
 
 
