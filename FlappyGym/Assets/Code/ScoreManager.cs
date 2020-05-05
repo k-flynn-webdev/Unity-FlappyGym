@@ -22,14 +22,14 @@ public class ScoreManager : MonoBehaviour
     {
         _score = newScore;
 
-        _scoreAnim.SetTrigger("Score");
+        _scoreAnim.SetTrigger("score");
 
         for (int i = 0; i < _ScoreText.Length; i++)
         {
             _ScoreText[i].text = _score.ToString();
         }
 
-        ServiceLocator.Resolve<GameEvent>().SetEvent("Score");
+        ServiceLocator.Resolve<GameEvent>().SetEvent("score");
     }
 
     public void AddScore(float addScore)
