@@ -8,7 +8,7 @@ public class Level_01 : Level
     [SerializeField]
     private ObjectPoolItem _player;
 
-    public float _floorSize = 10f;
+    public float _tileSize = 10f;
     private List<ObjectPoolItem> _floors = new List<ObjectPoolItem>();
 
     [SerializeField]
@@ -99,7 +99,7 @@ public class Level_01 : Level
                 }
             }   
 
-            _currentPos += _floorSize;
+            _currentPos += _tileSize;
         }
     }
 
@@ -199,7 +199,7 @@ public class Level_01 : Level
             return;
         }
 
-        xEnd += _floorSize;
+        xEnd += _tileSize;
 
         if (!CheckXLevelMax(xEnd))
         {

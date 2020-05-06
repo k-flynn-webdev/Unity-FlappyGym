@@ -73,6 +73,7 @@
     <Compile Include="Assets\Code\GameLoader.cs" />
     <Compile Include="Assets\Code\GameState.cs" />
     <Compile Include="Assets\Code\GameStateUI.cs" />
+    <Compile Include="Assets\Code\ImageRead.cs" />
     <Compile Include="Assets\Code\interfaces\IPublishEvent.cs" />
     <Compile Include="Assets\Code\interfaces\IPublishState.cs" />
     <Compile Include="Assets\Code\interfaces\IReset.cs" />

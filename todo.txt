@@ -17,11 +17,10 @@ TODO:::
 		in play screen
 		pause screen
 		leaderboard screen
-	add score effect	
 	improve floor art shadow bug
 
 
-
+✅	add score effect
 ✅	UI icons simple
 ✅	better jump
 ✅	score reset
