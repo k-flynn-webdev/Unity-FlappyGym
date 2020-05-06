@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\GameStateEditor.cs" />
+    <Compile Include="Assets\Editor\ItemConfigEditor.cs" />
     <Compile Include="Assets\Editor\ObjectPoolAssetsEditor.cs" />
     <Compile Include="Assets\Editor\ObjectPoolItemEditor.cs" />
     <Compile Include="Assets\Editor\ObjectPoolManager.cs" />

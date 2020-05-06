@@ -67,6 +67,7 @@
     <Compile Include="Assets\Code\CameraControl.cs" />
     <Compile Include="Assets\Code\CharacterMove.cs" />
     <Compile Include="Assets\Code\defs\GameStateObj.cs" />
+    <Compile Include="Assets\Code\defs\ItemColor.cs" />
     <Compile Include="Assets\Code\defs\Level.cs" />
     <Compile Include="Assets\Code\defs\ObjectPoolInfo.cs" />
     <Compile Include="Assets\Code\GameEvent.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Assets\Code\interfaces\ISubscribeEvent.cs" />
     <Compile Include="Assets\Code\interfaces\ISubscribeState.cs" />
     <Compile Include="Assets\Code\Item.cs" />
+    <Compile Include="Assets\Code\ItemConfig.cs" />
     <Compile Include="Assets\Code\Level_01.cs" />
     <Compile Include="Assets\Code\LevelManager.cs" />
     <Compile Include="Assets\Code\ObjectPoolAssets.cs" />
