@@ -9,7 +9,7 @@ public class ImageRead : MonoBehaviour
 
     public static void SetImage(Texture2D image)
     {
-        if (_tmpImg.Equals(image))
+        if (_tmpImg != null && _tmpImg.Equals(image))
         {
             return;
         }

@@ -5,11 +5,16 @@ using UnityEngine;
 public class Level_01 : Level
 {
 
+    [SerializeField]
+    private ItemConfig _itemConfig;
 
-    public float _tileSize = 10f;
+    [SerializeField]
+    private Texture2D _levelImage;
 
+    [SerializeField]
+    private float _tileSize = 10f;
 
-
+    private List<ObjectPoolItem> _items = new List<ObjectPoolItem>();
 
     //private ObjectPoolItem _player;
 
@@ -38,6 +43,7 @@ public class Level_01 : Level
     //private float _xlevelMax = 0f;
 
     private float _nextUpdate = 0f;
+    private int _lastRender = -1;
 
     private void Update()
     {
@@ -62,6 +68,10 @@ public class Level_01 : Level
 
     public override void Setup()
     {
+        ImageRead.SetImage(_levelImage);
+
+        RenderWorld(0);
+
         //UpdateMinMaxLevel();
         //_player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player", true);
         //ResetPlayer();
@@ -140,13 +150,32 @@ public class Level_01 : Level
 
     private void UpdateNextUpdate()
     {
-        _nextUpdate = _xProgress + 1f;
+        _nextUpdate = _xProgress + (_tileSize * 0.33f);
+        int tmpIndex = Mathf.CeilToInt(_xProgress);
+        RenderWorld(tmpIndex);
     }
+
+
+    private void RenderWorld(int posX)
+    {
+        if (posX == _lastRender)
+        {
+            return;
+        }
+
+        Color[] _tmpStrip = ImageRead.GetPixelStripX(posX);
+
+        for (int i = 0, max = _tmpStrip.Length; i < max; i++)
+        {
+            Debug.Log(_itemConfig.GetItemFromColour(_tmpStrip[i]));
+        }
+    }
+
 
     //private void UpdateMinMaxLevel()
     //{
-        //_xlevelMin = _levelOffset + _xProgress - (_levelSize / 2);
-        //_xlevelMax = _levelOffset + _xProgress + (_levelSize / 2);
+    //_xlevelMin = _levelOffset + _xProgress - (_levelSize / 2);
+    //_xlevelMax = _levelOffset + _xProgress + (_levelSize / 2);
     //}
 
     public override void Reset()
@@ -268,23 +297,12 @@ public class Level_01 : Level
 
     public override void UnLoad()
     {
-        //if (_player == null)
-        //{
-        //    return;
-        //}
-
         ServiceLocator.Resolve<CameraControl>().SetTarget();
-        //_player.SetItemNotActive();
 
-        //for (int i = 0; i < _floors.Count; i++)
-        //{
-        //    _floors[i].SetItemNotActive();
-        //}
-
-        //for (int i = 0; i < _pipes.Count; i++)
-        //{
-        //    _pipes[i].SetItemNotActive();
-        //}
+        for (int i = 0; i < _items.Count; i++)
+        {
+            _items[i].SetItemNotActive();
+        }
 
         base.UnLoad();
     }

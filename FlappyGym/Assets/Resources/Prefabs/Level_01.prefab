@@ -45,11 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   _isPlaying: 0
-  _player: {fileID: 0}
-  _floorSize: 5
-  _pipeStart: 35
-  _pipeMin: 15
-  _pipeMax: 30
-  _startPos: {x: 7, y: 5, z: 0}
-  _levelSize: 61
-  _levelOffset: 10
+  _itemConfig: {fileID: 11400000, guid: 666f65522cf7648a0beb24559e2b670d, type: 2}
+  _levelImage: {fileID: 2800000, guid: c85ca3b1c62444e63ac7c1c7319a9f32, type: 3}
+  _tileSize: 10
+  _offset: 40
