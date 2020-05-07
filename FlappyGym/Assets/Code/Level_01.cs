@@ -70,7 +70,10 @@ public class Level_01 : Level
     {
         ImageRead.SetImage(_levelImage);
 
-        RenderWorld(0);
+        for (int i = 0; i < _offset; i++)
+        {
+            RenderWorld(i);
+        }
 
         //UpdateMinMaxLevel();
         //_player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player", true);
@@ -165,12 +168,55 @@ public class Level_01 : Level
 
         Color[] _tmpStrip = ImageRead.GetPixelStripX(posX);
 
+        float positionX = posX * _tileSize;
+        float positionY = 0f;
+        float positionZ = 0f;
+
         for (int i = 0, max = _tmpStrip.Length; i < max; i++)
         {
-            Debug.Log(_itemConfig.GetItemFromColour(_tmpStrip[i]));
+            string objectType = _itemConfig.GetItemFromColour(_tmpStrip[i]);
+
+            if (objectType == "")
+            {
+                continue;
+            }
+
+            positionY = i * _tileSize;
+
+            Vector3 tmpPos = new Vector3(positionX, positionY, positionZ);
+
+            // make sure nothing exists at the tilepos that is the tile type
+            ObjectPoolItem _itemFound = FindItemAtPosition(tmpPos, objectType);
+            if (_itemFound != null)
+            {
+                continue;
+            }
+
+            // request an item
+            ObjectPoolItem tmp = ServiceLocator.Resolve<ObjectPoolManager>().GetItem(objectType, true);
+            tmp.gameObject.transform.position = tmpPos;
+            _items.Add(tmp);
         }
     }
 
+    private float _distance = 1f;
+
+    private ObjectPoolItem FindItemAtPosition(Vector3 pos, string type)
+    {
+        float _tmpDistance = 0f;
+
+        for (int i = 0, max = _items.Count; i < max; i++)
+        {
+            _tmpDistance = Vector3.Distance(_items[i].transform.position, pos);
+
+            if (_tmpDistance < _distance && type == _items[i].name)
+            {
+                return _items[i];
+            }
+        }
+
+        return null;
+    }
 
     //private void UpdateMinMaxLevel()
     //{

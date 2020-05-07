@@ -39,13 +39,16 @@ public class ObjectPoolItem : MonoBehaviour
         ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
     }
 
-    public ObjectPoolItem CreateItem(bool activate)
+    public ObjectPoolItem CreateItem(bool activate, string name)
     {
         ObjectPoolItem tmpObj = Instantiate(this, new Vector3(0, 0, 0), Quaternion.identity);
         if (activate)
         {
             tmpObj.SetItemActive();
         }
+
+        tmpObj.name = name;
+
         return tmpObj;
     }
 }

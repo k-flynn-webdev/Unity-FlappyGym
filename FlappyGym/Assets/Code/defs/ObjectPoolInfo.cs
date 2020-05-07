@@ -27,7 +27,7 @@ public class ObjectPoolInfo
             }
         }
 
-        ObjectPoolItem tmpItem = this.prefab.CreateItem(activate);
+        ObjectPoolItem tmpItem = this.prefab.CreateItem(activate, this.prefab.name);
         this.items.Add(tmpItem);
         ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
         return tmpItem;

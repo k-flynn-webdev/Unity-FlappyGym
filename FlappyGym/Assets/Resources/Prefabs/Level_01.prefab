@@ -47,5 +47,5 @@ MonoBehaviour:
   _isPlaying: 0
   _itemConfig: {fileID: 11400000, guid: 666f65522cf7648a0beb24559e2b670d, type: 2}
   _levelImage: {fileID: 2800000, guid: c85ca3b1c62444e63ac7c1c7319a9f32, type: 3}
-  _tileSize: 10
+  _tileSize: 5
   _offset: 40
