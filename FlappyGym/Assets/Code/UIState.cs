@@ -19,6 +19,10 @@ public class UIState : MonoBehaviour, ISubscribeState
     [SerializeField]
     public bool _over = false;
 
+    [SerializeField]
+    private float _waitDelay = 0f;
+
+
     void Awake()
     {
         TurnOff();
@@ -28,6 +32,24 @@ public class UIState : MonoBehaviour, ISubscribeState
     {
         ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
+
+    private void CheckTurnOn()
+    {
+        if (_waitDelay > 0f)
+        {
+            StartCoroutine(TurnOnDelay(_waitDelay));
+        } else
+        {
+            TurnOn();
+        }
+    }
+
+    private IEnumerator TurnOnDelay(float time)
+    {
+        yield return new WaitForSeconds(time);
+        TurnOn();
+    }
+
 
     private void TurnOn()
     {
@@ -51,27 +73,27 @@ public class UIState : MonoBehaviour, ISubscribeState
 
         if (_loading && state.state == GameStateObj.gameStates.Load)
         {
-            TurnOn();
+            CheckTurnOn();
             return;
         }
         if (_main && state.state == GameStateObj.gameStates.Main)
         {
-            TurnOn();
+            CheckTurnOn();
             return;
         }
         if (_play && state.state == GameStateObj.gameStates.Play)
         {
-            TurnOn();
+            CheckTurnOn();
             return;
         }
         if (_pause && state.state == GameStateObj.gameStates.Pause)
         {
-            TurnOn();
+            CheckTurnOn();
             return;
         }
         if (_over && state.state == GameStateObj.gameStates.Over)
         {
-            TurnOn();
+            CheckTurnOn();
             return;
         }
     }

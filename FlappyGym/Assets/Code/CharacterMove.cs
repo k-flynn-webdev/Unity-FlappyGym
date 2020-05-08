@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CharacterMove : MonoBehaviour, ISubscribeState
+public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
 {
     [SerializeField]
     private Vector3 _speed = new Vector3();

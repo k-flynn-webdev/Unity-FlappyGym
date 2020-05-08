@@ -200,13 +200,13 @@ public class Level_01 : Level
 
     public override void Reset()
     {
-        _progress = Vector3.zero;
-        _player.transform.position = _playerStartPos;
-
         for (int i = 0, max = _items.Count; i < max; i++)
         {
             _items[i].Reset();
         }
+
+        _progress = Vector3.zero;
+        _player.transform.position = _playerStartPos;
 
         UpdateLastUpdate();
         ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
