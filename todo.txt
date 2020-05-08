@@ -9,8 +9,6 @@ TODO:::
 
 	title player screen, with player moving naturally ..
 	into play swap
-	level read/load from image strip
-		coins on floor
 	All UI to 10x standard
 		start screen
 		game over/score screen
@@ -19,7 +17,8 @@ TODO:::
 		leaderboard screen
 	improve floor art shadow bug
 
-
+✅	level read/load from image strip
+✅	coins placed on floor
 ✅	add score effect
 ✅	UI icons simple
 ✅	better jump
