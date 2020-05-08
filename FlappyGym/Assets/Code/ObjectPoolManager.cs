@@ -47,7 +47,7 @@ public class ObjectPoolManager : MonoBehaviour
             return null;
         }
 
-        Debug.Log("Getting " + item);
+        //Debug.Log("Getting " + item);
         return ItemPrefabs[item].GetItem(activate);
     }
 

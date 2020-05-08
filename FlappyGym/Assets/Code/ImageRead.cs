@@ -7,6 +7,9 @@ public class ImageRead : MonoBehaviour
     private static Texture2D _tmpImg;
     private static Color32[] _cache;
 
+
+    private static Color _nullColor = Color.white;
+
     public static void SetImage(Texture2D image)
     {
         if (_tmpImg != null && _tmpImg.Equals(image))
@@ -22,14 +25,19 @@ public class ImageRead : MonoBehaviour
     {
         if (x < 0 || y < 0)
         {
-            return Color.white;
+            return _nullColor;
+        }
+
+        if (x >= _tmpImg.width || y >= _tmpImg.height)
+        {
+            return _nullColor;
         }
 
         int tmpCoord = x + (y * _tmpImg.width);
 
-        if (tmpCoord > _cache.Length)
+        if (tmpCoord >= _cache.Length)
         {
-            return Color.white;
+            return _nullColor;
         }
 
         return _cache[tmpCoord];
@@ -42,7 +50,7 @@ public class ImageRead : MonoBehaviour
 
         for (int i = 0; i < _tmp.Length; i++)
         {
-            _tmp[i] = Color.white;
+            _tmp[i] = _nullColor;
         }
 
         if (x < 0)
@@ -64,7 +72,7 @@ public class ImageRead : MonoBehaviour
 
         for (int i = 0; i < _tmp.Length; i++)
         {
-            _tmp[i] = Color.white;
+            _tmp[i] = _nullColor;
         }
 
         if (y < 0)

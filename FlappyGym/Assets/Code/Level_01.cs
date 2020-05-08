@@ -12,194 +12,157 @@ public class Level_01 : Level
     private Texture2D _levelImage;
 
     [SerializeField]
-    private float _tileSize = 10f;
+    private float _tileSize = 5f;
 
     private List<ObjectPoolItem> _items = new List<ObjectPoolItem>();
 
-    //private ObjectPoolItem _player;
+    private bool _hasPlayer = false;
+    private ObjectPoolItem _player;
+    [SerializeField]
+    private Vector3 _playerStartPos;
 
-    //private List<ObjectPoolItem> _floors = new List<ObjectPoolItem>();
-
-    //[SerializeField]
-    //private float _pipeStart = 20f;
-    //[SerializeField]
-    //private float _pipeMin = 5f;
-    //[SerializeField]
-    //private float _pipeMax = 15f;
-    //private List<ObjectPoolItem> _pipes = new List<ObjectPoolItem>();
-
-
-    //[SerializeField]
-    //private Vector3 _startPos;
-    //[SerializeField]
-    //private float _levelSize = 40f;
-    //[SerializeField]
-    //private float _levelOffset = 20f;
 
     [SerializeField]
-    private float _offset = 40f;
-    private float _xProgress = 0f;
-    //private float _xlevelMin = 0f;
-    //private float _xlevelMax = 0f;
+    private float _levelDisplaySize = 40f;
 
-    private float _nextUpdate = 0f;
+    private int _offsetTiles = 0;
+    private int _offsetTilesHalf = 0;
+
+
+    // Current position of interest
+    [SerializeField]
+    private Vector3 _progress = new Vector3();
+
+    // Next position to meet before update
+    private Vector3 _lastUpdate = new Vector3();
+
+    // value used to base an update
+    private float _distanceBias = 1f;
+    private float _offscreenDist = 0f;
+
+    // Last rendered position
     private int _lastRender = -1;
+
+
+    void Awake()
+    {
+        _offsetTiles = Mathf.RoundToInt(_levelDisplaySize / _tileSize);
+        _offsetTilesHalf = Mathf.RoundToInt(_offsetTiles / 2);
+        _offscreenDist = _levelDisplaySize * 1.25f;
+    }
+
 
     private void Update()
     {
         if (_isPlaying)
         {
-            GetUpdateXProgress();
+            UpdateProgress();
 
-            if (_xProgress > _nextUpdate)
+            float distance = Vector3.Distance(_progress, _lastUpdate);
+
+            if (distance > _distanceBias)
             {
-                UpdateNextUpdate();
-                //UpdateMinMaxLevel();
-                //UpdateFloors();
-                //UpdatePipes();
+                UpdateLastUpdate();
             }
         }
     }
 
-    private void GetUpdateXProgress()
+    private void UpdateProgress()
     {
-        //_xProgress = _player.transform.position.x;
+        _progress = _hasPlayer ? _player.transform.position : Vector3.zero;
     }
 
     public override void Setup()
     {
         ImageRead.SetImage(_levelImage);
-
-        for (int i = 0; i < _offset; i++)
-        {
-            RenderWorld(i);
-        }
-
-        //UpdateMinMaxLevel();
-        //_player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player", true);
-        //ResetPlayer();
-        //CreateFloors();
-        //CreatePipes();
+        ClearItemsOffScreen();
+        RenderWorld(_progress);
+        GetPlayer();
 
         base.Setup();
     }
 
-    //private void CreateFloors()
-    //{
-        //for (int i = 0; i < 20; i++)
-        //{
-        //    _floors.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Floor", true));
-        //}
-    //}
-
-    //private void CreatePipes()
-    //{
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    _pipes.Add(ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Pipe", true));
-        //}
-    //}
-
-    //private bool CheckXLevelMax(float posX)
-    //{
-        //return posX < _xProgress + _offset;
-    //}
-
-    //private void SetupFloors()
-    //{
-        //float _currentPos = _xlevelMin;
-
-        //for (int i = 0; i < _floors.Count; i++)
-        //{
-        //    if (_floors[i].Item != null)
-        //    {
-        //        if (CheckXLevelMax(_currentPos))
-        //        {
-        //            _floors[i].Item.Place(_currentPos);
-        //            _floors[i].SetItemActive();
-        //        } else
-        //        {
-        //            _floors[i].SetItemNotActive();
-        //        }
-        //    }   
-
-        //    _currentPos += _tileSize;
-        //}
-    //}
-
-    //private void SetupPipes()
-    //{
-        //float _currentPos = _pipeStart;
-
-        //for (int i = 0; i < _pipes.Count; i++)
-        //{
-        //    if (_pipes[i].Item != null)
-        //    {
-        //        if (CheckXLevelMax(_currentPos))
-        //        {
-        //            _pipes[i].Item.Place(_currentPos);
-        //            _pipes[i].SetItemActive();
-        //        }
-        //        else
-        //        {
-        //            _pipes[i].SetItemNotActive();
-        //        }
-        //    }
-
-        //    _currentPos += Random.Range(_pipeMin, _pipeMax);
-        //}
-    //}
-
-
-    private void UpdateNextUpdate()
+    private void GetPlayer()
     {
-        _nextUpdate = _xProgress + (_tileSize * 0.33f);
-        int tmpIndex = Mathf.CeilToInt(_xProgress);
-        RenderWorld(tmpIndex);
+        _player = ServiceLocator.Resolve<ObjectPoolManager>().GetItem("Player", true);
+        _player.transform.position = _playerStartPos;
+        _items.Add(_player);
+        _hasPlayer = true;
     }
 
-
-    private void RenderWorld(int posX)
+    private void UnloadPlayer()
     {
-        if (posX == _lastRender)
+        ServiceLocator.Resolve<CameraControl>().SetTarget();
+        _player.SetItemNotActive();
+        _hasPlayer = false;
+    }
+
+    private void UpdateLastUpdate()
+    {
+        _lastUpdate = _progress;
+        ClearItemsOffScreen();
+        RenderWorld(_progress);
+    }
+
+    private void RenderWorld(Vector3 pos)
+    {
+        int[] posArray = PositionToPixel(pos);
+        int posHash = posArray[0] + posArray[1] + posArray[2];
+
+        if (posHash == _lastRender)
         {
             return;
         }
 
-        Color[] _tmpStrip = ImageRead.GetPixelStripX(posX);
+        int startX = posArray[0] - _offsetTilesHalf;
+        int endX = posArray[0] + _offsetTilesHalf + 1;
+        int startY = posArray[1] - _offsetTilesHalf;
+        int endY = posArray[1] + _offsetTilesHalf + 1;
 
-        float positionX = posX * _tileSize;
-        float positionY = 0f;
-        float positionZ = 0f;
-
-        for (int i = 0, max = _tmpStrip.Length; i < max; i++)
+        for (int x = startX; x < endX; x++)
         {
-            string objectType = _itemConfig.GetItemFromColour(_tmpStrip[i]);
-
-            if (objectType == "")
+            for (int y = startY; y < endY; y++)
             {
-                continue;
+
+                Color tmpCol = ImageRead.GetPixelXY(x, y);
+                string objectType = _itemConfig.GetItemFromColour(tmpCol);
+
+                if (objectType == "")
+                {
+                    continue;
+                }
+
+                Vector3 tmpPos = PositionFromPixel(x, y, 0);
+
+                ObjectPoolItem _itemFound = FindItemAtPosition(tmpPos, objectType);
+                if (_itemFound != null)
+                {
+                    continue;
+                }
+
+                ObjectPoolItem tmp = ServiceLocator.Resolve<ObjectPoolManager>().GetItem(objectType, true);
+                tmp.gameObject.transform.position = tmpPos;
+                _items.Add(tmp);
             }
-
-            positionY = i * _tileSize;
-
-            Vector3 tmpPos = new Vector3(positionX, positionY, positionZ);
-
-            // make sure nothing exists at the tilepos that is the tile type
-            ObjectPoolItem _itemFound = FindItemAtPosition(tmpPos, objectType);
-            if (_itemFound != null)
-            {
-                continue;
-            }
-
-            // request an item
-            ObjectPoolItem tmp = ServiceLocator.Resolve<ObjectPoolManager>().GetItem(objectType, true);
-            tmp.gameObject.transform.position = tmpPos;
-            _items.Add(tmp);
         }
+
+        _lastRender = posHash;
     }
 
-    private float _distance = 1f;
+    private int[] PositionToPixel(Vector3 pos)
+    {
+        int[] tmp = new int[3];
+        tmp[0] = (int)pos.x / (int)_tileSize;
+        tmp[1] = (int)pos.y / (int)_tileSize;
+        tmp[2] = (int)pos.z / (int)_tileSize;
+
+        return tmp;
+    }
+
+    private Vector3 PositionFromPixel(int x, int y, int z)
+    {
+        return new Vector3(x * _tileSize, y * _tileSize, z * _tileSize);
+    }
 
     private ObjectPoolItem FindItemAtPosition(Vector3 pos, string type)
     {
@@ -209,7 +172,7 @@ public class Level_01 : Level
         {
             _tmpDistance = Vector3.Distance(_items[i].transform.position, pos);
 
-            if (_tmpDistance < _distance && type == _items[i].name)
+            if (_tmpDistance < _distanceBias && _items[i].name.Equals(type))
             {
                 return _items[i];
             }
@@ -218,37 +181,43 @@ public class Level_01 : Level
         return null;
     }
 
-    //private void UpdateMinMaxLevel()
-    //{
-    //_xlevelMin = _levelOffset + _xProgress - (_levelSize / 2);
-    //_xlevelMax = _levelOffset + _xProgress + (_levelSize / 2);
-    //}
+
+    private void ClearItemsOffScreen()
+    {
+        float _tmpDistance = 0f;
+
+        for (int i = _items.Count - 1; i >= 0; i--)
+        {
+            _tmpDistance = Vector3.Distance(_items[i].transform.position, _progress);
+
+            if (_tmpDistance > _offscreenDist)
+            {
+                _items[i].SetItemNotActive();
+                _items.RemoveAt(i);
+            }
+        }
+    }
 
     public override void Reset()
     {
-        _xProgress = 0f;
-        UpdateNextUpdate();
-        //ResetPlayer();
-        //UpdateMinMaxLevel();
-        //SetupFloors();
-        //SetupPipes();
+        _progress = Vector3.zero;
+        _player.transform.position = _playerStartPos;
+
+        for (int i = 0, max = _items.Count; i < max; i++)
+        {
+            _items[i].Reset();
+        }
+
+        UpdateLastUpdate();
         ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
+
         base.Reset();
     }
-
-    //private void ResetPlayer()
-    //{
-        //_player.transform.position = _startPos;
-        //_player.transform.localEulerAngles = Vector3.zero;
-        //_player.GetComponent<CharacterMove>().Reset();
-        //_xProgress = _startPos.x;
-    //}
-
 
     public override void Title()
     {
         Reset();
-        //ServiceLocator.Resolve<CameraControl>().SetTarget(_player.transform);
+        ServiceLocator.Resolve<CameraControl>().SetTarget(_player.transform);
     }
 
     public override void Play()
@@ -256,99 +225,16 @@ public class Level_01 : Level
         base.Play();
     }
 
-
-    //private void UpdateFloors()
-    //{
-    //    float xEnd = 0f;
-    //    float xPos = 0f;
-    //    int floorIdx = -1;
-
-    //    for (int i = 0; i < _floors.Count; i++)
-    //    {
-    //        xPos = _floors[i].Active ? _floors[i].transform.position.x : 0f;
-
-    //        if (xPos > xEnd)
-    //        {
-    //            xEnd = xPos;
-    //        }
-
-    //        if (xPos < _xlevelMin)
-    //        {
-    //            floorIdx = i;
-    //            _floors[i].SetItemNotActive();
-    //        }
-    //    }
-
-    //    UpdateLastUpdate();
-
-    //    if (floorIdx == -1)
-    //    {
-    //        return;
-    //    }
-
-    //    xEnd += _tileSize;
-
-    //    if (!CheckXLevelMax(xEnd))
-    //    {
-    //        return;
-    //    }
-
-    //    if (_floors[floorIdx].Item != null)
-    //    {
-    //        _floors[floorIdx].Item.Place(xEnd);
-    //        _floors[floorIdx].SetItemActive();
-    //    }
-    //}
-
-    //private void UpdatePipes()
-    //{
-    //    float xEnd = 0f;
-    //    float xPos = 0f;
-    //    int pipeIdx = -1;
-
-    //    for (int i = 0; i < _pipes.Count; i++)
-    //    {
-    //        xPos = _pipes[i].Active ? _pipes[i].transform.position.x : 0f;
-
-    //        if (xPos > xEnd)
-    //        {
-    //            xEnd = xPos;
-    //        }
-
-    //        if (xPos < _xlevelMin)
-    //        {
-    //            pipeIdx = i;
-    //            _pipes[i].SetItemNotActive();
-    //        }
-    //    }
-
-    //    if (pipeIdx == -1)
-    //    {
-    //        return;
-    //    }
-
-    //    xEnd += Random.Range(_pipeMin, _pipeMax);
-
-    //    if (!CheckXLevelMax(xEnd))
-    //    {
-    //        return;
-    //    }
-
-    //    if (_pipes[pipeIdx].Item != null)
-    //    {
-    //        _pipes[pipeIdx].Item.Place(xEnd);
-    //        _pipes[pipeIdx].SetItemActive();
-    //    }
-    //}
-
     public override void UnLoad()
     {
-        ServiceLocator.Resolve<CameraControl>().SetTarget();
-
         for (int i = 0; i < _items.Count; i++)
         {
             _items[i].SetItemNotActive();
         }
+
+        _items.Clear();
+
+        UnloadPlayer();
 
         base.UnLoad();
     }

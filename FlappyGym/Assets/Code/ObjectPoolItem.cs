@@ -32,11 +32,16 @@ public class ObjectPoolItem : MonoBehaviour
     {
         _isActive = false;
         this.gameObject.SetActive(false);
+        this.Reset();
+        ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+    }
+
+    public void Reset()
+    {
         for (int i = 0; i < ItemResets.Length; i++)
         {
             ItemResets[i].Reset();
         }
-        ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
     }
 
     public ObjectPoolItem CreateItem(bool activate, string name)

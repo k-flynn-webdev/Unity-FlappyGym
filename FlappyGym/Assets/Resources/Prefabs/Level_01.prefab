@@ -48,4 +48,6 @@ MonoBehaviour:
   _itemConfig: {fileID: 11400000, guid: 666f65522cf7648a0beb24559e2b670d, type: 2}
   _levelImage: {fileID: 2800000, guid: c85ca3b1c62444e63ac7c1c7319a9f32, type: 3}
   _tileSize: 5
-  _offset: 40
+  _playerStartPos: {x: -3, y: 5, z: 0}
+  _levelDisplaySize: 75
+  _progress: {x: 0, y: 0, z: 0}
