@@ -2,21 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, ISubscribeState
+public class Player : MonoBehaviour
 {
-
-    private CharacterMove _charcterMove;
+    private CharacterMove _characterMove;
 
 
     void Awake()
     {
         ServiceLocator.Register<Player>(this);
-        _charcterMove = GetComponent<CharacterMove>();
-    }
-
-    void Start()
-    {
-        ServiceLocator.Resolve<GameState>().SubscribeState(this);
+        _characterMove = GetComponent<CharacterMove>();
     }
 
     public void Kill(float time)
@@ -26,9 +20,9 @@ public class Player : MonoBehaviour, ISubscribeState
 
     public void Force(float force, Vector3 point)
     {
-        if (_charcterMove != null)
+        if (_characterMove != null)
         {
-            _charcterMove.Force(force, point);
+            _characterMove.Force(force, point);
         }
     }
 
@@ -39,10 +33,5 @@ public class Player : MonoBehaviour, ISubscribeState
         yield return new WaitForSeconds(time);
 
         ServiceLocator.Resolve<GameState>().SetStateOver();
-    }
-
-    public void ReactState(GameStateObj state)
-    {
-        //_gameInPlay = state.state == GameStateObj.gameStates.Play;
     }
 }

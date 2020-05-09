@@ -89,12 +89,12 @@
     <Compile Include="Assets\Code\ObjectPoolManager.cs" />
     <Compile Include="Assets\Code\Player.cs" />
     <Compile Include="Assets\Code\PlayerKill.cs" />
-    <Compile Include="Assets\Code\PlayerScore.cs" />
+    <Compile Include="Assets\Code\ScoreAdd.cs" />
     <Compile Include="Assets\Code\ScoreManager.cs" />
     <Compile Include="Assets\Code\ServiceLocator.cs" />
     <Compile Include="Assets\Code\UI_Effect_Die.cs" />
     <Compile Include="Assets\Code\UI_FPS.cs" />
-    <Compile Include="Assets\Code\UIState.cs" />
+    <Compile Include="Assets\Code\UI_State.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />

@@ -16,6 +16,7 @@ TODO:::
 		pause screen
 		leaderboard screen
 	improve floor art shadow bug
+-	player is still not resetting properly to zero spot!
 
 ✅	level read/load from image strip
 ✅	coins placed on floor

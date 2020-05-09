@@ -10,7 +10,11 @@ public class LevelManager : MonoBehaviour, ISubscribeState
 
     [SerializeField]
     private Level _current = null;
+    [SerializeField]
+    private bool _ready = false;
 
+    [SerializeField]
+    public GameStateObj State { get; set; }
 
     void Awake()
     {
@@ -20,134 +24,121 @@ public class LevelManager : MonoBehaviour, ISubscribeState
     void Start()
     {
         ServiceLocator.Resolve<GameState>().SubscribeState(this);
+        StartCoroutine(DelayLoad());
     }
 
-    void LoadALevel(int levelId = 0)
+    IEnumerator DelayLoad()
     {
+        yield return new WaitForSeconds(1f);
+        LoadLevel();
+    }
 
-        Level levelToLoad = null;
-        for (int i = 0, max = Levels.Length; i < max; i++)
+    void Update()
+    {
+        if (!_ready)
         {
-            if (Levels[i].Id == levelId)
-            {
-                levelToLoad = Levels[i];
-                break;
-            }
-        }
-
-        if (Levels.Length == 0 || levelToLoad == null)
-        {
-            Debug.Log("No levels to load.");
             return;
         }
 
-        if (_current == null)
-        {
-            _current = Instantiate(levelToLoad);
-            SetupLevel();
-            return;
-        }
-
-        if (_current.Id == levelToLoad.Id)
-        {
-            ResetLevel();
-            return;
-        }
-
-        if (levelToLoad.Id != _current.Id)
-        {
-            UnloadLevel();
-            _current = Instantiate(levelToLoad, new Vector3(0, 0, 0), Quaternion.identity);
-            SetupLevel();
-        }
-    }
-
-
-    void SetupLevel()
-    {
-        if (_current != null)
-        {
-            _current.Setup();
-        }
-    }
-
-    void TitleLevel()
-    {
-        if (_current != null)
+        if (State.state == GameStateObj.gameStates.Title)
         {
             _current.Title();
         }
-    }
 
-    void PlayLevel(GameStateObj state)
-    {
-        if (_current == null)
+        if (State.state == GameStateObj.gameStates.Play)
         {
-            return;
+            _current.Play();
         }
 
-        if (state.last == GameStateObj.gameStates.Over)
-        {
-            ResetLevel();
-        }
-
-        _current.Play();
-    }
-
-    void ResetLevel()
-    {
-        if (_current != null)
-        {
-            _current.Reset();
-        }
-    }
-
-    void PauseLevel()
-    {
-        if (_current != null)
+        if (State.state == GameStateObj.gameStates.Pause)
         {
             _current.Pause();
         }
-    }
 
-    void OverLevel()
-    {
-        if (_current != null)
+        if (State.state == GameStateObj.gameStates.Over)
         {
             _current.Over();
         }
     }
 
-    void UnloadLevel()
+    private Level GetLevelByID(string level)
     {
-        if (_current != null)
+        if (Levels.Length == 0 || level == null)
         {
-            _current.UnLoad();
+            throw new System.Exception("No levels to load");
         }
+
+        for (int i = 0, max = Levels.Length; i < max; i++)
+        {
+            if (Levels[i].ID.Equals(level))
+            {
+                return Levels[i];
+            }
+        }
+
+        throw new System.Exception("No levels match");
     }
 
+    public void LoadLevel(string levelId = "01")
+    {
+        _ready = false;
+
+        Level levelToLoad = GetLevelByID(levelId);
+
+        if (_current == null)
+        {
+            _current = Instantiate(levelToLoad, new Vector3(0, 0, 0), Quaternion.identity);
+            _current.Load();
+            return;
+        }
+
+        if (_current.ID.Equals(levelId))
+        {
+            ServiceLocator.Resolve<GameState>().SetStateTitle();
+            return;
+        }
+
+        _current.UnLoad();
+        _current = Instantiate(levelToLoad, new Vector3(0, 0, 0), Quaternion.identity);
+        _current.Load();
+    }
 
     public void ReactState(GameStateObj state)
     {
-        switch (state.state)
+        State = state;
+
+        // cleanup previous mode
+        switch (state.last)
         {
-            case GameStateObj.gameStates.Main:
-                if (_current == null)
-                {
-                    LoadALevel();
-                    break;
-                }
-                ResetLevel();
-                TitleLevel();
+            case GameStateObj.gameStates.Title:
+                _current.TitlePost(state);
                 break;
             case GameStateObj.gameStates.Play:
-                PlayLevel(state);
+                _current.PlayPost(state);
                 break;
             case GameStateObj.gameStates.Pause:
-                PauseLevel();
+                _current.PausePost(state);
                 break;
             case GameStateObj.gameStates.Over:
-                OverLevel();
+                _current.OverPost(state);
+                break;
+        }
+
+        // set new mode
+        switch (state.state)
+        {
+            case GameStateObj.gameStates.Title:
+                _current.TitlePre(state);
+                _ready = true;
+                break;
+            case GameStateObj.gameStates.Play:
+                _current.PlayPre(state);
+                break;
+            case GameStateObj.gameStates.Pause:
+                _current.PausePre(state);
+                break;
+            case GameStateObj.gameStates.Over:
+                _current.OverPre(state);
                 break;
         }
     }

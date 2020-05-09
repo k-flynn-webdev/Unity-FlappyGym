@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class UI_Effect_Die : MonoBehaviour, ISubscribeEvent, ISubscribeState
 {
+
+    public GameStateObj State { get; set; }
+
     private bool active = false;
     private float _whiteOutProgress = 0f;
     private Image _imageEffect;
@@ -77,6 +80,8 @@ public class UI_Effect_Die : MonoBehaviour, ISubscribeEvent, ISubscribeState
 
     public void ReactState(GameStateObj state)
     {
+        State = state;
+
         if (active && state.state != GameStateObj.gameStates.Over)
         {
             TurnOff();

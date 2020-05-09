@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIState : MonoBehaviour, ISubscribeState
+public class UI_State : MonoBehaviour, ISubscribeState
 {
+
+    public GameStateObj State { get; set; }
 
     [SerializeField]
     public GameObject[] _uiGO;
@@ -71,12 +73,14 @@ public class UIState : MonoBehaviour, ISubscribeState
     {
         TurnOff();
 
+        State = state;
+
         if (_loading && state.state == GameStateObj.gameStates.Load)
         {
             CheckTurnOn();
             return;
         }
-        if (_main && state.state == GameStateObj.gameStates.Main)
+        if (_main && state.state == GameStateObj.gameStates.Title)
         {
             CheckTurnOn();
             return;

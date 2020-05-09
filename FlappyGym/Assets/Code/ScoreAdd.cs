@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScore : MonoBehaviour, IReset
+public class ScoreAdd : MonoBehaviour, IReset
 {
+    [SerializeField]
+    public string _tag;
+
     [SerializeField]
     public bool _active = true;
     [SerializeField]
@@ -19,7 +22,7 @@ public class PlayerScore : MonoBehaviour, IReset
     {
         if (_active &&
             !_hasFired &&
-            other.CompareTag("Player"))
+            other.CompareTag(_tag))
         {
             ServiceLocator.Resolve<ScoreManager>().AddScore(_score);
             _hasFired = true;

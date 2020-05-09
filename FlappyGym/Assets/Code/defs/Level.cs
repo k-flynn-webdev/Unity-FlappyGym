@@ -4,55 +4,87 @@ using UnityEngine;
 
 public abstract class Level: MonoBehaviour
 {
+    public string ID { get { return this._id; } }
+    public Vector3 Progress { get { return this._progress; } }
+
     [SerializeField]
-    public int Id = 0;
+    private string _id;
     [SerializeField]
-    public bool _isPlaying = false;
+    private Vector3 _progress;
+    [SerializeField]
+    private bool _loaded = false;
+    [SerializeField]
+    private bool _ready = false;
 
-    public virtual void Setup()
+
+    public void SetProgress(Vector3 progress)
     {
-        Debug.Log("Setup");
-        // do things
-        // now go title ..
-        Title();
-        _isPlaying = false;
+        _progress = progress;
     }
 
-    public virtual void Title()
+    public void SetReady(bool isReady)
     {
-        Debug.Log("Title");
-        _isPlaying = false;
+        _ready = isReady;
     }
 
-    public virtual void Play()
+    public virtual void Load()
     {
-        _isPlaying = true;
-        Debug.Log("Play");
+        _loaded = true;
+        ServiceLocator.Resolve<GameState>().SetStateTitle();
     }
 
-    public virtual void Reset()
-    {
-        Debug.Log("Reset");
-    }
-
-    public virtual void Pause()
-    {
-        _isPlaying = false;
-        Debug.Log("Pause");
-    }
-
-    // win / fail scenario
-    public virtual void Over()
-    {
-        _isPlaying = false;
-        Debug.Log("Over");
-    }
-
+    // kills self and removes GO
     public virtual void UnLoad()
     {
-        _isPlaying = false;
-        Debug.Log("Unload");
+        _loaded = false;
         Destroy(this.gameObject, 5f);
-        // kills self and removes GO
+    }
+
+    public virtual void TitlePre(GameStateObj state)
+    {
+        SetReady(true);
+    }
+
+    public virtual void Title() { }
+
+    public virtual void TitlePost(GameStateObj state)
+    {
+        SetReady(false);
+    }
+
+    public virtual void PlayPre(GameStateObj state)
+    {
+        SetReady(true);
+    }
+
+    public virtual void Play() { }
+
+    public virtual void PlayPost(GameStateObj state)
+    {
+        SetReady(false);
+    }
+
+    public virtual void PausePre(GameStateObj state)
+    {
+        SetReady(true);
+    }
+
+    public virtual void Pause() { }
+
+    public virtual void PausePost(GameStateObj state)
+    {
+        SetReady(false);
+    }
+
+    public virtual void OverPre(GameStateObj state)
+    {
+        SetReady(true);
+    }
+
+    public virtual void Over() { }
+
+    public virtual void OverPost(GameStateObj state)
+    {
+        SetReady(false);
     }
 }

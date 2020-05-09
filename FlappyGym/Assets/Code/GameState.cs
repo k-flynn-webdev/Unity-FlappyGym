@@ -19,17 +19,6 @@ public class GameState : MonoBehaviour, IPublishState
         ServiceLocator.Register<GameState>(this);
     }
 
-    private void Start()
-    {
-        StartCoroutine(DelayLoad());
-    }
-
-
-    IEnumerator DelayLoad()
-    {
-        yield return new WaitForSeconds(1f);
-        SetStateLoad();
-    }
 
     public void ChangeState(GameStateObj.gameStates state)
     {
@@ -43,8 +32,11 @@ public class GameState : MonoBehaviour, IPublishState
             case GameStateObj.gameStates.Load:
                 this.SetState(GameStateObj.gameStates.Load);
                 break;
-            case GameStateObj.gameStates.Main:
-                this.SetState(GameStateObj.gameStates.Main);
+            case GameStateObj.gameStates.Title:
+                this.SetState(GameStateObj.gameStates.Title);
+                break;
+            case GameStateObj.gameStates.Settings:
+                this.SetState(GameStateObj.gameStates.Settings);
                 break;
             case GameStateObj.gameStates.Play:
                 this.SetState(GameStateObj.gameStates.Play);
@@ -70,7 +62,8 @@ public class GameState : MonoBehaviour, IPublishState
     }
 
     public void SetStateLoad() => ChangeState(GameStateObj.gameStates.Load);
-    public void SetStateMain() => ChangeState(GameStateObj.gameStates.Main);
+    public void SetStateTitle() => ChangeState(GameStateObj.gameStates.Title);
+    public void SetStateSettings() => ChangeState(GameStateObj.gameStates.Settings);
     public void SetStatePlay() => ChangeState(GameStateObj.gameStates.Play);
     public void SetStatePause() => ChangeState(GameStateObj.gameStates.Pause);
     public void SetStateOver() => ChangeState(GameStateObj.gameStates.Over);

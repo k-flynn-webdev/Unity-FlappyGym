@@ -9,29 +9,31 @@ public class Level_01 : Level
     private ItemConfig _itemConfig;
 
     [SerializeField]
-    private Texture2D _levelImage;
-
-    [SerializeField]
     private float _tileSize = 5f;
 
-    private List<ObjectPoolItem> _items = new List<ObjectPoolItem>();
+    [SerializeField]
+    private Texture2D _levelTitle;
+    [SerializeField]
+    private float _levelTitleSize = 40f;
 
-    private bool _hasPlayer = false;
-    private ObjectPoolItem _player;
+    [SerializeField]
+    private Texture2D _levelPlay;
+    [SerializeField]
+    private float _levelPlaySize = 40f;
+
+
     [SerializeField]
     private Vector3 _playerStartPos;
-
-
-    [SerializeField]
-    private float _levelDisplaySize = 40f;
+    private bool _hasPlayer = false;
+    private ObjectPoolItem _player;
 
     private int _offsetTiles = 0;
     private int _offsetTilesHalf = 0;
+    private List<ObjectPoolItem> _items = new List<ObjectPoolItem>();
 
 
     // Current position of interest
-    [SerializeField]
-    private Vector3 _progress = new Vector3();
+    //private Vector3 _progress = new Vector3();
 
     // Next position to meet before update
     private Vector3 _lastUpdate = new Vector3();
@@ -46,41 +48,131 @@ public class Level_01 : Level
 
     void Awake()
     {
-        _offsetTiles = Mathf.RoundToInt(_levelDisplaySize / _tileSize);
+        _offsetTiles = Mathf.RoundToInt(_levelPlaySize / _tileSize);
         _offsetTilesHalf = Mathf.RoundToInt(_offsetTiles / 2);
-        _offscreenDist = _levelDisplaySize * 1.25f;
+        _offscreenDist = _levelPlaySize * 1.25f;
+    }
+
+    public override void Load()
+    {
+        GetPlayer();
+
+        base.Load();
+    }
+
+    public override void TitlePre(GameStateObj state)
+    {
+        ImageRead.SetImage(_levelTitle);
+
+        base.TitlePre(state);
+    }
+
+    public override void Title()
+    {
+        RenderLevel();
+
+        base.Title();
+    }
+
+    public override void PlayPre(GameStateObj state)
+    {
+        if (state.last == GameStateObj.gameStates.Pause)
+        {
+            return;
+        }
+
+        if (state.last == GameStateObj.gameStates.Title)
+        {
+            ImageRead.SetImage(_levelPlay);
+        }
+
+        PlayReset();
+
+        base.PlayPre(state);
+    }
+
+    public override void Play()
+    {
+        RenderLevel();
+
+        base.Play();
+    }
+
+    public override void Pause()
+    {
+        RenderLevel();
+
+        base.Pause();
+    }
+
+    public override void Over()
+    {
+        RenderLevel();
+
+        base.Over();
+    }
+
+    public override void OverPost(GameStateObj state)
+    {
+        PlayReset();
+
+        base.OverPost(state);
+    }
+
+    public override void UnLoad()
+    {
+        for (int i = 0; i < _items.Count; i++)
+        {
+            _items[i].SetItemNotActive();
+        }
+
+        _items.Clear();
+
+        UnloadPlayer();
+
+        base.UnLoad();
     }
 
 
-    private void Update()
+    public void PlayReset()
     {
-        if (_isPlaying)
+        for (int i = 0, max = _items.Count; i < max; i++)
         {
-            UpdateProgress();
+            _items[i].Reset();
+        }
 
-            float distance = Vector3.Distance(_progress, _lastUpdate);
+        _player.transform.position = _playerStartPos;
 
-            if (distance > _distanceBias)
-            {
-                UpdateLastUpdate();
-            }
+        _player.Reset();
+
+        UpdatePlayerProgress();
+        ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
+
+        ClearItemsOffScreen();
+        RenderLevel();
+    }
+
+
+    private void RenderLevel()
+    {
+        UpdatePlayerProgress();
+
+        float distance = Vector3.Distance(Progress, _lastUpdate);
+
+        if (distance > _distanceBias)
+        {
+            _lastUpdate = Progress;
+            ClearItemsOffScreen();
+            RenderWorld(Progress);
         }
     }
 
-    private void UpdateProgress()
+    private void UpdatePlayerProgress()
     {
-        _progress = _hasPlayer ? _player.transform.position : Vector3.zero;
+        SetProgress(_hasPlayer ? _player.transform.position : Vector3.zero);
     }
 
-    public override void Setup()
-    {
-        ImageRead.SetImage(_levelImage);
-        ClearItemsOffScreen();
-        RenderWorld(_progress);
-        GetPlayer();
 
-        base.Setup();
-    }
 
     private void GetPlayer()
     {
@@ -88,21 +180,18 @@ public class Level_01 : Level
         _player.transform.position = _playerStartPos;
         _items.Add(_player);
         _hasPlayer = true;
+        ServiceLocator.Resolve<CameraControl>().SetTarget(_player.transform);
     }
 
     private void UnloadPlayer()
     {
         ServiceLocator.Resolve<CameraControl>().SetTarget();
         _player.SetItemNotActive();
+        _items.Remove(_player);
         _hasPlayer = false;
     }
 
-    private void UpdateLastUpdate()
-    {
-        _lastUpdate = _progress;
-        ClearItemsOffScreen();
-        RenderWorld(_progress);
-    }
+
 
     private void RenderWorld(Vector3 pos)
     {
@@ -188,7 +277,7 @@ public class Level_01 : Level
 
         for (int i = _items.Count - 1; i >= 0; i--)
         {
-            _tmpDistance = Vector3.Distance(_items[i].transform.position, _progress);
+            _tmpDistance = Vector3.Distance(_items[i].transform.position, Progress);
 
             if (_tmpDistance > _offscreenDist)
             {
@@ -196,46 +285,5 @@ public class Level_01 : Level
                 _items.RemoveAt(i);
             }
         }
-    }
-
-    public override void Reset()
-    {
-        for (int i = 0, max = _items.Count; i < max; i++)
-        {
-            _items[i].Reset();
-        }
-
-        _progress = Vector3.zero;
-        _player.transform.position = _playerStartPos;
-
-        UpdateLastUpdate();
-        ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
-
-        base.Reset();
-    }
-
-    public override void Title()
-    {
-        Reset();
-        ServiceLocator.Resolve<CameraControl>().SetTarget(_player.transform);
-    }
-
-    public override void Play()
-    {
-        base.Play();
-    }
-
-    public override void UnLoad()
-    {
-        for (int i = 0; i < _items.Count; i++)
-        {
-            _items[i].SetItemNotActive();
-        }
-
-        _items.Clear();
-
-        UnloadPlayer();
-
-        base.UnLoad();
     }
 }

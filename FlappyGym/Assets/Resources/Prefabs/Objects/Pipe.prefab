@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a50e2c6728f14468fbcbb40b1ba06125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tag: Player
   _active: 1
   _hasFired: 0
   _hideOnContact: {fileID: 73194014804166854}

@@ -10,7 +10,7 @@ public class GameStateUI: MonoBehaviour
     }
     public void SetStateMain()
     {
-        ServiceLocator.Resolve<GameState>().ChangeState(GameStateObj.gameStates.Main);
+        ServiceLocator.Resolve<GameState>().ChangeState(GameStateObj.gameStates.Title);
     }
     public void SetStatePlay()
     {

@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
 {
+
+    public GameStateObj State { get; set; }
+
     [SerializeField]
     private Vector3 _speed = new Vector3();
     [SerializeField]
@@ -349,6 +352,7 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
     }
 
     public void ReactState(GameStateObj state) {
+        State = state;
         _gameInPlay = state.state == GameStateObj.gameStates.Play;
         _gameOver = state.state == GameStateObj.gameStates.Over;
     }
