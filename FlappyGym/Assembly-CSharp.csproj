@@ -71,7 +71,6 @@
     <Compile Include="Assets\Code\defs\Level.cs" />
     <Compile Include="Assets\Code\defs\ObjectPoolInfo.cs" />
     <Compile Include="Assets\Code\GameEvent.cs" />
-    <Compile Include="Assets\Code\GameLoader.cs" />
     <Compile Include="Assets\Code\GameState.cs" />
     <Compile Include="Assets\Code\GameStateUI.cs" />
     <Compile Include="Assets\Code\ImageRead.cs" />

@@ -16,6 +16,8 @@ public class LevelManager : MonoBehaviour, ISubscribeState
     [SerializeField]
     public GameStateObj State { get; set; }
 
+    private float _loadWaitTime = 1f;
+
     void Awake()
     {
         ServiceLocator.Register<LevelManager>(this);
@@ -24,12 +26,21 @@ public class LevelManager : MonoBehaviour, ISubscribeState
     void Start()
     {
         ServiceLocator.Resolve<GameState>().SubscribeState(this);
-        StartCoroutine(DelayLoad());
+        StartCoroutine(LoadState());
     }
 
-    IEnumerator DelayLoad()
+    // staggered init load ..
+    IEnumerator LoadState()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
+        ServiceLocator.Resolve<GameState>().SetStateLoad();
+        StartCoroutine(LoadLevelDelay());
+    }
+
+    // staggered first load
+    IEnumerator LoadLevelDelay()
+    {
+        yield return new WaitForSeconds(_loadWaitTime);
         LoadLevel();
     }
 
@@ -40,7 +51,8 @@ public class LevelManager : MonoBehaviour, ISubscribeState
             return;
         }
 
-        if (State.state == GameStateObj.gameStates.Title)
+        if (State.state == GameStateObj.gameStates.Title ||
+            State.state == GameStateObj.gameStates.Settings)
         {
             _current.Title();
         }
