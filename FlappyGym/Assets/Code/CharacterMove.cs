@@ -51,6 +51,7 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
     private Vector3 _localPos;
     private bool _gameInPlay = false;
     private bool _gameOver = false;
+    private float _readyCountDown = 0f;
 
 
     private Vector3 _speedVar = new Vector3();
@@ -97,12 +98,20 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
         _isFall = false;
         _isHit = false;
         _isGround = false;
+
+        _readyCountDown = 3f;
     }
 
     void Update()
     {
         if (_gameInPlay || _gameOver)
         {
+            if (_readyCountDown > 0f)
+            {
+                _readyCountDown -= Time.deltaTime;
+                return;
+            }
+
             this.getLocalPos();
 
             if (Input.GetButtonDown("Fire1") &&

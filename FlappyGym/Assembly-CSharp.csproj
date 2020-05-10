@@ -93,6 +93,7 @@
     <Compile Include="Assets\Code\ScoreAdd.cs" />
     <Compile Include="Assets\Code\ScoreManager.cs" />
     <Compile Include="Assets\Code\ServiceLocator.cs" />
+    <Compile Include="Assets\Code\UI_CountDown.cs" />
     <Compile Include="Assets\Code\UI_Effect_Die.cs" />
     <Compile Include="Assets\Code\UI_FPS.cs" />
     <Compile Include="Assets\Code\UI_State.cs" />

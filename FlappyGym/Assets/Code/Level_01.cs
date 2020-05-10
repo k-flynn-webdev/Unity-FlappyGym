@@ -31,10 +31,6 @@ public class Level_01 : Level
     private int _offsetTilesHalf = 0;
     private List<ObjectPoolItem> _items = new List<ObjectPoolItem>();
 
-
-    // Current position of interest
-    //private Vector3 _progress = new Vector3();
-
     // Next position to meet before update
     private Vector3 _lastUpdate = new Vector3();
 
@@ -151,7 +147,6 @@ public class Level_01 : Level
         ClearItemsOffScreen();
         RenderLevel();
     }
-
 
     private void RenderLevel()
     {
