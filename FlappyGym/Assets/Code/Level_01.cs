@@ -137,15 +137,17 @@ public class Level_01 : Level
             _items[i].Reset();
         }
 
+        _lastUpdate = _player.transform.position;
         _player.transform.position = _playerStartPos;
+        UpdatePlayerProgress();
 
         _player.Reset();
 
-        UpdatePlayerProgress();
         ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
 
         ClearItemsOffScreen();
         RenderLevel();
+        RenderWorld(Progress);
     }
 
     private void RenderLevel()
