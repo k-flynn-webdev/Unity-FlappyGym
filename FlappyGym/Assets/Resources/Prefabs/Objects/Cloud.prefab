@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cloudMoveSpeed: 1
   _cloudDirection: {x: 1, y: 0, z: 0}
-  _heightRange: 7
+  _heightRange: 10
 --- !u!114 &9008528435463915115
 MonoBehaviour:
   m_ObjectHideFlags: 0

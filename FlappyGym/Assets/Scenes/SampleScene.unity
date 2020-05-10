@@ -910,8 +910,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _screenLeft: {fileID: 754078812}
   _screenRight: {fileID: 1279905209}
-  _cloudsMin: 18
-  _cloudsMax: 27
+  _cloudsMin: 25
+  _cloudsMax: 35
 --- !u!1 &309735088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,7 +1195,7 @@ MonoBehaviour:
   _followOffset: {x: 20, y: 16, z: -10}
   _followSmoothing: {x: 1.33, y: 1.33, z: 1}
   _targetLocal: {fileID: 0}
-  _minAmount: 0.01
+  _minAmount: 0.05
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0

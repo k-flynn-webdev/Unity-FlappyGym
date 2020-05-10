@@ -33,7 +33,7 @@ public class CloudBg : MonoBehaviour, IReset
 
     private void InitCloud()
     {
-        _moveSpeed = Random.Range(_cloudMoveSpeed * 0.5f, _cloudMoveSpeed * 1.1f);
+        _moveSpeed = Random.Range(_cloudMoveSpeed * 0.1f, _cloudMoveSpeed * 1.25f);
         this.transform.localEulerAngles = new Vector3(Random.Range(0f, 180f), Random.Range(0f, 180f), Random.Range(0f, 180f));
         float newScale = Random.Range(0.25f, 1.5f);
         this.transform.localScale = Vector3.one * newScale;
@@ -46,9 +46,5 @@ public class CloudBg : MonoBehaviour, IReset
     private void UpdateCloud()
     {
         this.transform.position += _cloudDirection.normalized * (Time.deltaTime * _moveSpeed);
-        Vector3 localRot = this.transform.localEulerAngles;
-        localRot.x += Time.deltaTime;
-        this.transform.localEulerAngles = localRot;
-
     }
 }

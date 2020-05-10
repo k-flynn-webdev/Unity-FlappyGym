@@ -18,6 +18,8 @@ TODO:::
 	improve floor art shadow bug
 -	player is still not resetting properly to zero spot!
 
+✅	add skybox & bg clouds
+✅	improve level state loading etc
 ✅	level read/load from image strip
 ✅	coins placed on floor
 ✅	add score effect
