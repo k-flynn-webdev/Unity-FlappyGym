@@ -142,7 +142,9 @@ public class Level_01 : Level
 
         if (_lastUpdate.x > 50f)
         {
-            ServiceLocator.Resolve<CameraControl>().SetPosition(_playerStartPos);
+            Vector3 _newPos = _playerStartPos;
+            _newPos.z = -12f;
+            ServiceLocator.Resolve<CameraControl>().SetPosition(_newPos);
         }
 
         UpdatePlayerProgress();
