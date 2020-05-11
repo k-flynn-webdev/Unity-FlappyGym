@@ -139,6 +139,12 @@ public class Level_01 : Level
 
         _lastUpdate = _player.transform.position;
         _player.transform.position = _playerStartPos;
+
+        if (_lastUpdate.x > 50f)
+        {
+            ServiceLocator.Resolve<CameraControl>().SetPosition(_playerStartPos);
+        }
+
         UpdatePlayerProgress();
 
         _player.Reset();

@@ -40,7 +40,7 @@ public class CameraControl : MonoBehaviour
     }
 
 
-    public void SetCamPosition(Vector3 camPos)
+    public void SetPosition(Vector3 camPos)
     {
         this.transform.position = camPos;
     }
