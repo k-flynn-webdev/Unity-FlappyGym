@@ -5,6 +5,9 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour
 {
 
+    public Camera Camera
+    { get { return this._camera; } }
+
     [SerializeField]
     private Camera _camera;
 
@@ -34,6 +37,12 @@ public class CameraControl : MonoBehaviour
         SetTarget();
         _camera = GetComponent<Camera>();
         ServiceLocator.Register<CameraControl>(this);
+    }
+
+
+    public void SetCamPosition(Vector3 camPos)
+    {
+        this.transform.position = camPos;
     }
 
     public void SetTarget()
