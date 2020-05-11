@@ -13,7 +13,7 @@ public class UI_CountDown : MonoBehaviour, ISubscribeState
         ServiceLocator.Resolve<GameState>().SubscribeState(this);
     }
 
-    private float _waitTime_Secs = 0.7f;
+    private float _waitTime_Secs = 0.55f;
 
     public void ReactState(GameStateObj state)
     {
@@ -58,6 +58,7 @@ public class UI_CountDown : MonoBehaviour, ISubscribeState
     IEnumerator CountDown_Go()
     {
         ServiceLocator.Resolve<ScoreManager>().SetScore(0f, false);
+        ServiceLocator.Resolve<GameEvent>().NewEvent("AllowPlayerInput");
         _UI_Text_GO.SetActive(true);
         yield return new WaitForSeconds(2f);
         _UI_Text_GO.SetActive(false);

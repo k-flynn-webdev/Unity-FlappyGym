@@ -12,6 +12,8 @@ public class GameEvent : MonoBehaviour, IPublishEvent
 
     private float _time;
 
+    [SerializeField]
+    private string[] _events = new string[10];
 
 
     void Awake()
@@ -19,17 +21,12 @@ public class GameEvent : MonoBehaviour, IPublishEvent
         ServiceLocator.Register<GameEvent>(this);
     }
 
-    private void Start()
-    {
-    }
-
-
-    public void ChangeEvent(string eventType)
+    public void NewEvent(string eventType)
     {
         float timeNow = Time.time;
         float timeDiff = timeNow - _time;
 
-        if (_current == eventType && timeDiff < .1f)
+        if (_current == eventType && timeDiff < .05f)
         {
             return;
         }
@@ -37,13 +34,26 @@ public class GameEvent : MonoBehaviour, IPublishEvent
         SetEvent(eventType);
     }
 
-    public void SetEvent(string eventType)
+    private void SetEvent(string eventType)
     {
         _last = _current;
         _current = eventType;
         _time = Time.time;
 
+        #if UNITY_EDITOR
+            UpdateHistory(eventType);
+        #endif
+
         this.NotifyEvent();
+    }
+
+    private void UpdateHistory(string newEvent)
+    {
+        for (int i = _events.Length - 2; i > 0; i--)
+        {
+            _events[i] = _events[i - 1];
+        }
+        _events[0] = newEvent;
     }
 
     public List<ISubscribeEvent> EventSubscribers

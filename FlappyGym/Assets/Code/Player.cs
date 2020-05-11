@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator OnDeath(float time)
     {
-        ServiceLocator.Resolve<GameEvent>().SetEvent("Died");
+        ServiceLocator.Resolve<GameEvent>().NewEvent("Died");
 
         yield return new WaitForSeconds(time);
 

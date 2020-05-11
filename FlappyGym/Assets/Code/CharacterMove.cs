@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
+public class CharacterMove : MonoBehaviour, ISubscribeState, ISubscribeEvent, IReset
 {
 
     public GameStateObj State { get; set; }
@@ -51,7 +51,7 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
     private Vector3 _localPos;
     private bool _gameInPlay = false;
     private bool _gameOver = false;
-    private float _readyCountDown = 0f;
+    private bool _allowInput = false;
 
 
     private Vector3 _speedVar = new Vector3();
@@ -78,6 +78,7 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
     void Start()
     {
         ServiceLocator.Resolve<GameState>().SubscribeState(this);
+        ServiceLocator.Resolve<GameEvent>().SubscribeEvent(this);
         _rotNormal = this.transform.localRotation;
     }
 
@@ -99,25 +100,23 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
         _isHit = false;
         _isGround = false;
 
-        _readyCountDown = 3f;
+        _allowInput = false;
     }
 
     void Update()
     {
-        if (_readyCountDown > 0f)
-        {
-            _readyCountDown -= Time.deltaTime;
-            return;
-        }
-
         if (_gameInPlay || _gameOver)
         {
             this.getLocalPos();
 
-            if (Input.GetButtonDown("Fire1") &&
-                !EventSystem.current.IsPointerOverGameObject() && _gameInPlay)
+            if (_allowInput)
             {
-                this.Jump();
+                if (_gameInPlay &&
+                    Input.GetButtonDown("Fire1") &&
+                    !EventSystem.current.IsPointerOverGameObject())
+                {
+                    this.Jump();
+                }
             }
 
             this.updateGround();
@@ -131,7 +130,6 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
             this.Move();
         }
     }
-
 
     void getLocalPos()
     {
@@ -339,18 +337,12 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
         _fallVar = Vector3.zero;
     }
 
-    //private float _jumpGoal = 0f;
-    //private float _jumpStart = 0f;
-
     void Jump()
     {
         if (_jumpTimer < _jumpInterrupt)
         {
             return;
         }
-
-        //_jumpStart = _localPos.y;
-        //_jumpGoal = _localPos.y + _jump.x;
 
         _localPos += Vector3.up * 0.1f;
         _jumpTimer = 0f;
@@ -364,5 +356,20 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
         State = state;
         _gameInPlay = state.state == GameStateObj.gameStates.Play;
         _gameOver = state.state == GameStateObj.gameStates.Over;
+    }
+
+    public void ReactEvent(string state)
+    {
+        if (state.Equals("DisablePlayerInput"))
+        {
+            _allowInput = false;
+            return;
+        }
+
+        if (state.Equals("AllowPlayerInput"))
+        {
+            _allowInput = true;
+            return;
+        }
     }
 }

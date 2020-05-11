@@ -154,6 +154,7 @@ public class Level_01 : Level
         ClearItemsOffScreen();
         RenderLevel();
         RenderWorld(Progress);
+        ServiceLocator.Resolve<GameEvent>().NewEvent("DisablePlayerInput");
     }
 
     private void RenderLevel()

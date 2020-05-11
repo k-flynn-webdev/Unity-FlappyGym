@@ -42,6 +42,6 @@ public class ScoreManager : MonoBehaviour
             _ScoreText[i].text = _score.ToString();
         }
 
-        ServiceLocator.Resolve<GameEvent>().SetEvent("score");
+        ServiceLocator.Resolve<GameEvent>().NewEvent("score");
     }
 }
