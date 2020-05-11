@@ -33,7 +33,9 @@ public class ObjectPoolItem : MonoBehaviour
         _isActive = false;
         this.gameObject.SetActive(false);
         this.Reset();
-        ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+        #if UNITY_EDITOR
+            ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+        #endif
     }
 
     public void Reset()

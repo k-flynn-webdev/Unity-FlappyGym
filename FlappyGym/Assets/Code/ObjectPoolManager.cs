@@ -43,11 +43,12 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if (!ItemPrefabs.ContainsKey(item))
         {
-            Debug.Log(item + " key does not exist - object manager");
+            #if UNITY_EDITOR
+                Debug.Log(item + " key does not exist - object manager");
+            #endif
             return null;
         }
 
-        //Debug.Log("Getting " + item);
         return ItemPrefabs[item].GetItem(activate);
     }
 

@@ -21,7 +21,9 @@ public class ObjectPoolInfo
                 if (activate)
                 {
                     items[i].SetItemActive();
-                    ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+                    #if UNITY_EDITOR
+                        ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+                    #endif
                 }
                 return items[i];
             }
@@ -29,7 +31,9 @@ public class ObjectPoolInfo
 
         ObjectPoolItem tmpItem = this.prefab.CreateItem(activate, this.prefab.name);
         this.items.Add(tmpItem);
-        ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+        #if UNITY_EDITOR
+            ServiceLocator.Resolve<ObjectPoolManager>().CheckCount();
+        #endif
         return tmpItem;
     }
 }
