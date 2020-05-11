@@ -104,14 +104,14 @@ public class CharacterMove : MonoBehaviour, ISubscribeState, IReset
 
     void Update()
     {
+        if (_readyCountDown > 0f)
+        {
+            _readyCountDown -= Time.deltaTime;
+            return;
+        }
+
         if (_gameInPlay || _gameOver)
         {
-            if (_readyCountDown > 0f)
-            {
-                _readyCountDown -= Time.deltaTime;
-                return;
-            }
-
             this.getLocalPos();
 
             if (Input.GetButtonDown("Fire1") &&
