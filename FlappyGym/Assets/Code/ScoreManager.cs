@@ -18,11 +18,24 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     Animator _scoreAnim;
 
-    public void SetScore(float newScore)
+    void Awake()
+    {
+        ServiceLocator.Register<ScoreManager>(this);
+    }
+
+    public void AddScore(float addScore)
+    {
+        SetScore(Score + addScore, true);
+    }
+
+    public void SetScore(float newScore, bool anim)
     {
         _score = newScore;
 
-        _scoreAnim.SetTrigger("score");
+        if (anim)
+        {
+            _scoreAnim.SetTrigger("score");
+        }
 
         for (int i = 0; i < _ScoreText.Length; i++)
         {
@@ -30,15 +43,5 @@ public class ScoreManager : MonoBehaviour
         }
 
         ServiceLocator.Resolve<GameEvent>().SetEvent("score");
-    }
-
-    public void AddScore(float addScore)
-    {
-        SetScore(Score + addScore);
-    }
-
-    void Awake()
-    {
-        ServiceLocator.Register<ScoreManager>(this);
     }
 }

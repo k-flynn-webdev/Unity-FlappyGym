@@ -143,8 +143,6 @@ public class Level_01 : Level
 
         _player.Reset();
 
-        ServiceLocator.Resolve<ScoreManager>().SetScore(0f);
-
         ClearItemsOffScreen();
         RenderLevel();
         RenderWorld(Progress);
@@ -209,30 +207,35 @@ public class Level_01 : Level
         {
             for (int y = startY; y < endY; y++)
             {
-
-                Color tmpCol = ImageRead.GetPixelXY(x, y);
-                string objectType = _itemConfig.GetItemFromColour(tmpCol);
-
-                if (objectType == "")
-                {
-                    continue;
-                }
-
-                Vector3 tmpPos = PositionFromPixel(x, y, 0);
-
-                ObjectPoolItem _itemFound = FindItemAtPosition(tmpPos, objectType);
-                if (_itemFound != null)
-                {
-                    continue;
-                }
-
-                ObjectPoolItem tmp = ServiceLocator.Resolve<ObjectPoolManager>().GetItem(objectType, true);
-                tmp.gameObject.transform.position = tmpPos;
-                _items.Add(tmp);
+                RenderPixel(x, y);
             }
         }
 
         _lastRender = posHash;
+    }
+
+
+    private void RenderPixel(int x, int y)
+    {
+        Color tmpCol = ImageRead.GetPixelXY(x, y);
+        string objectType = _itemConfig.GetItemFromColour(tmpCol);
+
+        if (objectType == "")
+        {
+            return;
+        }
+
+        Vector3 tmpPos = PositionFromPixel(x, y, 0);
+
+        ObjectPoolItem _itemFound = FindItemAtPosition(tmpPos, objectType);
+        if (_itemFound != null)
+        {
+            return;
+        }
+
+        ObjectPoolItem tmp = ServiceLocator.Resolve<ObjectPoolManager>().GetItem(objectType, true);
+        tmp.gameObject.transform.position = tmpPos;
+        _items.Add(tmp);
     }
 
     private int[] PositionToPixel(Vector3 pos)
