@@ -44,6 +44,11 @@ public class LevelManager : MonoBehaviour, ISubscribeState
         LoadLevel();
     }
 
+    public Vector3 GetProgress()
+    {
+        return _current != null ? _current.Progress : Vector3.zero; 
+    }
+
     void Update()
     {
         if (!_ready)

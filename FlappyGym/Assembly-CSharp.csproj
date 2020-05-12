@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Code\AnimSpin.cs" />
+    <Compile Include="Assets\Code\BGSpin.cs" />
     <Compile Include="Assets\Code\CameraBg.cs" />
     <Compile Include="Assets\Code\CameraControl.cs" />
     <Compile Include="Assets\Code\CharacterMove.cs" />
