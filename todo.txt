@@ -4,8 +4,8 @@ TODO:::
 
 :::
 
-	bg art
-	bg animated in game
+✅	bg art
+✅	bg animated in game
 
 	title player screen, with player moving naturally ..
 	into play swap
